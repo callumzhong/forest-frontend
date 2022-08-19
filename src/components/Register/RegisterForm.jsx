@@ -4,7 +4,12 @@ import Input from 'modules/Input';
 const RegisterForm = () => {
   return (
     <form action='' className='mb-6 text-right'>
-      <Input label='帳號' type='text' basis={8} />
+      <Input
+        label='帳號'
+        maxLength={12}
+        type='text'
+        basis={8}
+      />
       <Input
         maxLength={12}
         label='密碼'

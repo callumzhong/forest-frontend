@@ -3,7 +3,7 @@
     background-position: left 0% bottom 0%;
   }
   to {
-    background-position: left 9000% bottom 0%;
+    background-position: left 10000% bottom 0%;
   }
 }
 
@@ -12,7 +12,7 @@
     background-position: right 0% bottom 0%;
   }
   to {
-    background-position: right 9000% bottom 0%;
+    background-position: right 10000% bottom 0%;
   }
 }
 
@@ -41,7 +41,7 @@
     url('assets/images/UI/Layer_0009_2.png');
   background-repeat: repeat-x;
   background-size: 105%;
-  animation: slideright 640s infinite linear;
+  animation: slideright 720s infinite linear;
 }
 
 .hero::before {

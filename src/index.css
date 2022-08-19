@@ -4,8 +4,8 @@
 
 @font-face {
   font-family: 'Zpix';
-  src: url('assets/font/zpix.ttf'),
-    url('assets/font/zpix.woff2');
+  src: url('assets/font/zpix.woff2'),
+    url('assets/font/zpix.ttf');
 }
 
 @layer components {
