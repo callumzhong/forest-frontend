@@ -1,6 +1,6 @@
+import Author from 'components/Author/Author';
 import Login from 'components/Login/Login';
 import Register from 'components/Register/Register';
-import Button from 'modules/Button';
 import Card from 'modules/Card';
 import Hero from 'modules/Hero';
 
@@ -17,7 +17,7 @@ const LoginPage = () => {
           </div>
           <div className='flex flex-[0.2] flex-col gap-3'>
             <Register />
-            <Button width='full'>作者的話</Button>
+            <Author />
           </div>
         </Card>
       </div>

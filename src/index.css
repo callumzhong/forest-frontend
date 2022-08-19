@@ -7,18 +7,3 @@
   src: url('assets/font/zpix.woff2'),
     url('assets/font/zpix.ttf');
 }
-
-@layer components {
-  .ReactModal__Overlay {
-    opacity: 0;
-    transition: opacity 100ms ease-in-out;
-  }
-
-  .ReactModal__Overlay--after-open {
-    opacity: 1;
-  }
-
-  .ReactModal__Overlay--before-close {
-    opacity: 0;
-  }
-}

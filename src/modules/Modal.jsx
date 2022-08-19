@@ -2,7 +2,6 @@ import ReactModal from 'react-modal';
 ReactModal.setAppElement('#root');
 
 const Modal = ({
-  closeTimeoutMS = 120,
   isOpen,
   onAfterOpen,
   onAfterClose,
@@ -13,7 +12,6 @@ const Modal = ({
   return (
     <ReactModal
       shouldFocusAfterRender={false}
-      closeTimeoutMS={closeTimeoutMS}
       isOpen={isOpen}
       onAfterOpen={onAfterOpen}
       onAfterClose={onAfterClose}

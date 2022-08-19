@@ -16,6 +16,7 @@ const Register = () => {
         onRequestClose={onClose}
         contentLabel={'resister-modal'}
         isOpen={isOpen}
+        
       >
         <Card>
           <h2 className='mb-6 text-center text-xl'>
