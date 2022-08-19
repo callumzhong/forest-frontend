@@ -1,4 +1,7 @@
 import Login from 'components/Login/Login';
+import Register from 'components/Register/Register';
+import Button from 'modules/Button';
+import Card from 'modules/Card';
 
 const LoginPage = () => {
   return (
@@ -7,8 +10,15 @@ const LoginPage = () => {
         <h1 className='mb-6 text-center text-8xl text-white'>
           FOREST
         </h1>
-
-        <Login />
+        <Card gap={16}>
+          <div className='flex-[0.8]'>
+            <Login />
+          </div>
+          <div className='flex flex-[0.2] flex-col gap-3'>
+            <Register />
+            <Button width='full'>作者的話</Button>
+          </div>
+        </Card>
       </div>
     </div>
   );
