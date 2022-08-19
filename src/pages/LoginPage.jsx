@@ -2,11 +2,12 @@ import Login from 'components/Login/Login';
 import Register from 'components/Register/Register';
 import Button from 'modules/Button';
 import Card from 'modules/Card';
+import Hero from 'modules/Hero';
 
 const LoginPage = () => {
   return (
-    <div className='h-screen bg-hero bg-cover bg-bottom bg-no-repeat pt-6'>
-      <div className='container mx-auto flex h-full w-3/4 flex-col justify-around'>
+    <Hero className={'h-screen py-6'}>
+      <div className='container mx-auto flex h-full w-3/5 flex-col justify-around'>
         <h1 className='mb-6 text-center text-8xl text-white'>
           FOREST
         </h1>
@@ -20,7 +21,7 @@ const LoginPage = () => {
           </div>
         </Card>
       </div>
-    </div>
+    </Hero>
   );
 };
 

@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        // sans: ['ZPIX', ...defaultTheme.fontFamily.sans],
+        sans: ['ZPIX', ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
         border: '0 0 1px 2px rgba(255,255,255,0.8)',

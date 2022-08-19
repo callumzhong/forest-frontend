@@ -8,12 +8,6 @@
     url('assets/font/zpix.woff2');
 }
 
-@layer base {
-  * {
-    font-family: Zpix;
-  }
-}
-
 @layer components {
   .ReactModal__Overlay {
     opacity: 0;

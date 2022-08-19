@@ -1,0 +1,56 @@
+@keyframes slideleft {
+  from {
+    background-position: left 0% bottom 0%;
+  }
+  to {
+    background-position: left 9000% bottom 0%;
+  }
+}
+
+@keyframes slideright {
+  from {
+    background-position: right 0% bottom 0%;
+  }
+  to {
+    background-position: right 9000% bottom 0%;
+  }
+}
+
+.hero {
+  position: relative;
+  background-image: url('assets/images/UI/Layer_0000_9.png'),
+    url('assets/images/UI/Layer_0001_8.png'),
+    url('assets/images/UI/Layer_0002_7.png'),
+    url('assets/images/UI/Layer_0003_6.png'),
+    url('assets/images/UI/Layer_0004_Lights.png'),
+    url('assets/images/UI/Layer_0005_5.png'),
+    url('assets/images/UI/Layer_0006_4.png');
+
+  background-repeat: repeat-x;
+  background-size: 105%;
+  animation: slideleft 240s infinite linear;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url('assets/images/UI/Layer_0007_Lights.png'),
+    url('assets/images/UI/Layer_0008_3.png'),
+    url('assets/images/UI/Layer_0009_2.png');
+  background-repeat: repeat-x;
+  background-size: 105%;
+  animation: slideright 640s infinite linear;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url('assets/images/UI/Layer_0010_1.png'),
+    url('assets/images/UI/Layer_0011_0.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
