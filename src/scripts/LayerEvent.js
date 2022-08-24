@@ -52,28 +52,6 @@ class LayerEvent {
     emitter.on(eventName.walk, completeHandler);
   }
 
-  fight(resolve) {
-    const who = this.map.gameObjects[this.event.who];
-    who.startBehavior(
-      {
-        map: this.map,
-      },
-      {
-        type: 'fight',
-        direction: this.event.direction,
-        time: this.event.time,
-      },
-    );
-
-    const completeHandler = (e) => {
-      if (e.whoId === this.event.who) {
-        emitter.off(eventName.fight, completeHandler);
-        resolve();
-      }
-    };
-    emitter.on(eventName.fight, completeHandler);
-  }
-
   textMessage(resolve) {
     if (this.event.faceHero) {
       const obj = this.map.gameObjects[this.event.faceHero];

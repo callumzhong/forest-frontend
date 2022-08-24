@@ -225,20 +225,6 @@ class Layer {
     return resolve();
   }
 
-  async autoFight(resolve) {
-    const { hero } = this.gameObjects;
-    const event = new LayerEvent({
-      map: this,
-      event: {
-        type: 'fight',
-        direction: hero.direction,
-        who: 'hero',
-      },
-    });
-    await event.init();
-    return resolve();
-  }
-
   detectWall(x, y) {
     const detected = {};
     const { directionUpdate } = this.gameObjects.hero;
