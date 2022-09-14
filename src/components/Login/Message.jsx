@@ -1,4 +1,4 @@
-const Message = () => {
+const Message = ({}) => {
   //TODO: 讀取 SERVER 公告訊息
   return (
     <div className='border-2 border-amber-600 p-6'>

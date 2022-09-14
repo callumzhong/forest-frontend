@@ -62,9 +62,8 @@ class LayerEvent {
 
     emitter.emit(eventName.textMessage, {
       mode: this.event.mode,
-      text: this.event.text,
-      actions: this.event.actions || [],
-      next: this.event.next,
+      title: this.event.title,
+      content: this.event.content,
       onComplete: () => resolve(),
     });
   }

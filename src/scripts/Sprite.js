@@ -1,4 +1,4 @@
-import shadow from 'assets/images/characters/shadow.png';
+import emitter, { eventName } from 'emitter';
 import withGrid from 'utils/withGrid';
 
 class Sprite {
@@ -9,20 +9,11 @@ class Sprite {
     this.image.onload = () => {
       this.isLoaded = true;
     };
-    this.useShadow = config.useShadow || false;
     this.width = config.width || 16;
     this.height = config.height || 32;
     this.zoom = config.zoom || 1;
     this.transformX = config.transformX || 0;
     this.transformY = config.transformY || 0;
-
-    this.imageShadow = new Image();
-    this.imageShadow.src = shadow;
-    this.isLoadedShadow = false;
-    this.imageShadow.onload = () => {
-      this.isLoadedShadow = true;
-    };
-
     this.animations = config.animations || {
       'idle-down': [[0, 1]],
       'idle-right': [[0, 0]],
@@ -100,9 +91,112 @@ class Sprite {
         [6, 4],
         [7, 4],
       ],
+      'chop-left': [
+        [12, 5],
+        [11, 5],
+        [10, 5],
+        [9, 5],
+        [8, 5],
+        [7, 5],
+        [6, 5],
+        [5, 5],
+        [4, 5],
+        [3, 5],
+        [2, 5],
+        [1, 5],
+        [0, 5],
+      ],
+      'chop-right': [
+        [0, 2],
+        [1, 2],
+        [2, 2],
+        [3, 2],
+        [4, 2],
+        [5, 2],
+        [6, 2],
+        [7, 2],
+        [8, 2],
+        [9, 2],
+        [10, 2],
+        [11, 2],
+        [12, 2],
+      ],
+      'chop-down': [
+        [12, 5],
+        [11, 5],
+        [10, 5],
+        [9, 5],
+        [8, 5],
+        [7, 5],
+        [6, 5],
+        [5, 5],
+        [4, 5],
+        [3, 5],
+        [2, 5],
+        [1, 5],
+        [0, 5],
+      ],
+      'chop-up': [
+        [0, 2],
+        [1, 2],
+        [2, 2],
+        [3, 2],
+        [4, 2],
+        [5, 2],
+        [6, 2],
+        [7, 2],
+        [8, 2],
+        [9, 2],
+        [10, 2],
+        [11, 2],
+        [12, 2],
+      ],
+      'mining-left': [
+        [12, 6],
+        [11, 6],
+        [10, 6],
+        [9, 6],
+        [8, 6],
+        [7, 6],
+        [6, 6],
+        [5, 6],
+        [4, 6],
+      ],
+      'mining-down': [
+        [12, 6],
+        [11, 6],
+        [10, 6],
+        [9, 6],
+        [8, 6],
+        [7, 6],
+        [6, 6],
+        [5, 6],
+        [4, 6],
+      ],
+      'mining-right': [
+        [0, 3],
+        [1, 3],
+        [2, 3],
+        [3, 3],
+        [4, 3],
+        [5, 3],
+        [6, 3],
+        [7, 3],
+        [8, 3],
+      ],
+      'mining-up': [
+        [0, 3],
+        [1, 3],
+        [2, 3],
+        [3, 3],
+        [4, 3],
+        [5, 3],
+        [6, 3],
+        [7, 3],
+        [8, 3],
+      ],
     };
-    this.currentAnimation =
-      config.currentAnimation || 'idle-down';
+    this.currentAnimation = 'idle-down';
     this.currentAnimationFrame = 0;
 
     this.animationFrameLimit =
@@ -121,18 +215,47 @@ class Sprite {
   setAnimation(key) {
     if (this.currentAnimation === key) return;
 
-    this.transformX = 6;
     this.currentAnimation = key;
     this.currentAnimationFrame = 0;
     this.animationFrameProgress = this.animationFrameLimit;
-
+    if (!this.gameObject.isPlayerControlled) return;
+    this.transformX = 6;
     if (
       key.includes('fish-left') ||
       key.includes('fish-down')
     ) {
-      this.transformX = -22;
+      this.transformX = -24;
     }
-
+    if (
+      key.includes('fish-right') ||
+      key.includes('fish-up')
+    ) {
+      this.transformX = 6;
+    }
+    if (
+      key.includes('chop-left') ||
+      key.includes('chop-down')
+    ) {
+      this.transformX = -48;
+    }
+    if (
+      key.includes('mining-left') ||
+      key.includes('mining-down')
+    ) {
+      this.transformX = -24;
+    }
+    if (
+      key.includes('chop-right') ||
+      key.includes('chop-up')
+    ) {
+      this.transformX = 32;
+    }
+    if (
+      key.includes('mining-right') ||
+      key.includes('mining-up')
+    ) {
+      this.transformX = 6;
+    }
     if (key.includes('walk') || key.includes('idle')) {
       this.width = 16;
     } else {
@@ -152,11 +275,13 @@ class Sprite {
     if (this.frame === undefined) {
       if (
         this.gameObject.id === 'hero' &&
-        this.currentAnimation.includes('fish')
+        !this.currentAnimation.includes('walk') &&
+        !this.currentAnimation.includes('idle')
       ) {
-        console.log(1);
-        //TODO: 計算動作次數觸發完成
-        // emitter.emit(eventName.attack, this.gameObject);
+        const action = this.currentAnimation.split('-')[0];
+        emitter.emit(eventName.material, {
+          action,
+        });
       }
       this.currentAnimationFrame = 0;
     }
@@ -170,10 +295,9 @@ class Sprite {
       isLoaded,
       transformX,
       transformY,
-      isLoadedShadow,
       image,
-      imageShadow,
     } = this;
+
     const [frameX, frameY] = this.frame;
     const x =
       this.gameObject.x +
@@ -184,9 +308,6 @@ class Sprite {
       withGrid(centerPoint.y) -
       cameraPerson.y;
 
-    this.useShadow &&
-      isLoadedShadow &&
-      ctx.drawImage(imageShadow, x, y - 3);
     isLoaded &&
       ctx.drawImage(
         image,

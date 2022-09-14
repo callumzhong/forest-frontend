@@ -4,7 +4,7 @@ import Button from 'modules/Button';
 import Input from 'modules/Input';
 import { useForm } from 'react-hook-form';
 
-const LoginForm = () => {
+const LoginForm = ({ onSceneTransition }) => {
   const {
     watch,
     register,
@@ -18,7 +18,8 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
   const { isLoading, loginApi } = useLoginApi();
-  const onSubmit = (data) => loginApi(data);
+  const onSubmit = (data) =>
+    loginApi(data, onSceneTransition);
   const watched = watch();
   return (
     <form

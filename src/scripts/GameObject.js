@@ -31,8 +31,7 @@ class GameObject {
     if (
       map.isCutscenePlaying ||
       this.behaviorLoop.length === 0 ||
-      this.isStanding ||
-      this.isFighting
+      this.isStanding
     ) {
       return;
     }

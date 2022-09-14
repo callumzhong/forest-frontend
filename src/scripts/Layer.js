@@ -1,14 +1,9 @@
-import emitter, { eventName } from 'emitter';
-import { astar, Graph } from 'javascript-astar';
-import calculateDirection from 'utils/calculateDirection';
 import nextPosition from 'utils/nextPosition';
 import withGrid from 'utils/withGrid';
 import LayerEvent from './LayerEvent';
 
 class Layer {
   constructor(config) {
-    this.row = config.row;
-    this.column = config.column;
     this.map = config.map || null;
     this.gameObjects = config.gameObjects;
     this.cutsceneSpaces = config.cutsceneSpaces || {};
@@ -16,7 +11,6 @@ class Layer {
     this.walls = config.walls || {};
     this.isCutscenePlaying = false;
     this.isAuto = false;
-    this.aStarGrid = [];
 
     this.lowerImage = new Image();
     this.lowerImage.src = config.lowerSrc;
@@ -83,51 +77,13 @@ class Layer {
     );
   }
 
-  async openFight() {
-    return await new Promise((resolve) => {
-      this.autoFight(resolve);
-    });
-  }
-
-  closeFight() {
-    const { hero } = this.gameObjects;
-    hero.attack(false);
-    Object.values(this.gameObjects).forEach((object) =>
-      object.doBehaviorEvent(this),
-    );
-
-    emitter.emit(eventName.keyboard, {
-      space: true,
-      enter: true,
-      moving: true,
-    });
-  }
-
   changeMap(events) {
     this.startCutscene(events);
   }
 
-  checkForActionCutscene() {
-    const { hero } = this.gameObjects;
-    let nextCoords = nextPosition(
-      hero.x,
-      hero.y,
-      hero.direction,
-    );
-    let match = Object.values(this.gameObjects).find(
-      (object) => {
-        return (
-          `${object.x},${object.y}` ===
-          `${nextCoords.x},${nextCoords.y}`
-        );
-      },
-    );
-
-    if (
-      !this.isCutscenePlaying &&
-      match &&
-      match.talking.length
-    ) {
+  checkForTalkCutscene() {
+    const match = this.checkForActionSpaces('talk');
+    if (match) {
       this.startCutscene(match.talking[0].events);
     }
   }
@@ -140,89 +96,47 @@ class Layer {
       this.startCutscene(match[0].events);
     }
   }
-  checkForActionSpaces() {
+
+  checkForActionSpaces(type) {
     const { hero } = this.gameObjects;
-    const match = this.actionSpaces[`${hero.x},${hero.y}`];
-    console.log(match);
-    return match;
-  }
-
-  calculateGameObjectPath(resolve, state) {
-    const { gameObject } = state;
-    const { hero } = this.gameObjects;
-    const pos = {
-      sx: Math.trunc(hero.x / 48),
-      sy: Math.trunc(hero.y / 48),
-      ex: 0,
-      ey: 0,
-    };
-    this.aStarGrid = new Array(this.row)
-      .fill(0)
-      .map(() => new Array(this.column).fill(1));
-
-    Object.keys(this.walls).forEach((key) => {
-      let [x, y] = key.split(',');
-      x = Math.trunc(x / 48);
-      y = Math.trunc(y / 48);
-      this.aStarGrid[x][y] = 0;
-    });
-
-    const nextCoords = this.detectWall(
-      gameObject.x,
-      gameObject.y,
+    let direction = hero.direction;
+    if (direction === 'down') {
+      direction = 'left';
+    }
+    if (direction === 'up') {
+      direction = 'right';
+    }
+    const nextCoords = nextPosition(
+      hero.x,
+      hero.y,
+      direction,
     );
-    pos.ex = Math.trunc(nextCoords.x / 48);
-    pos.ey = Math.trunc(nextCoords.y / 48);
 
-    const graph = new Graph(this.aStarGrid);
-    const start = graph.grid[pos.sx][pos.sy];
-    const end = graph.grid[pos.ex][pos.ey];
-    const result = astar.search(graph, start, end);
-    return resolve(result);
-  }
+    if (type === 'action') {
+      const match =
+        this.actionSpaces[
+          `${nextCoords.x},${nextCoords.y}`
+        ];
+      return match;
+    }
 
-  async autoWalking(resolve, reject, state) {
-    const { paths } = state;
-    const { hero } = this.gameObjects;
-    const directions = [];
-    let x = Math.trunc(hero.x / 48);
-    let y = Math.trunc(hero.y / 48);
-    paths.forEach((path) => {
-      directions.push(
-        calculateDirection(
-          { x: x, y },
-          { x: path.x, y: path.y },
-        ),
+    if (type === 'talk') {
+      const match = Object.values(this.gameObjects).find(
+        (object) => {
+          return (
+            `${object.x},${object.y}` ===
+            `${nextCoords.x},${nextCoords.y}`
+          );
+        },
       );
-      x = path.x;
-      y = path.y;
-    });
-    let isError = '';
-    for (let i = 0; i < directions.length; i++) {
-      try {
-        const event = new LayerEvent({
-          map: this,
-          event: {
-            type: 'walk',
-            direction: directions[i],
-            who: 'hero',
-            isAuto: true,
-          },
-        });
-        await event.init();
-      } catch (error) {
-        isError = true;
-        break;
+      if (
+        !this.isCutscenePlaying &&
+        match &&
+        match.talking.length
+      ) {
+        return match;
       }
     }
-    if (isError) {
-      return reject({
-        status: 400,
-        message: '尋路 error',
-      });
-    }
-
-    return resolve();
   }
 
   detectWall(x, y) {

@@ -1,10 +1,30 @@
 import Author from 'components/Author/Author';
+import Character from 'components/Character/Character';
 import Login from 'components/Login/Login';
+import Message from 'components/Login/Message';
 import Register from 'components/Register/Register';
 import Card from 'modules/Card';
 import Hero from 'modules/Hero';
+import { useContext, useEffect } from 'react';
+import AuthContext from 'store/authContext';
+import sleep from 'utils/sleep';
 
-const LoginPage = () => {
+const LoginPage = ({ onSceneTransition }) => {
+  const { onLogout, isAuth, character } =
+    useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await sleep(1000);
+      onSceneTransition(false);
+    };
+    fetchData();
+  }, [onSceneTransition]);
+
+  useEffect(() => {
+    onLogout();
+  }, [onLogout]);
+
   return (
     <Hero className={'h-screen py-6'}>
       <div className='container mx-auto flex h-full w-3/5 flex-col justify-around'>
@@ -13,9 +33,16 @@ const LoginPage = () => {
         </h1>
         <Card gap={16}>
           <div className='flex-[0.8]'>
-            <Login />
+            {!isAuth && <Login />}
+            {isAuth && (
+              <Character
+                onSceneTransition={onSceneTransition}
+                onLogout={onLogout}
+              />
+            )}
+            <Message />
           </div>
-          <div className='flex flex-[0.2] flex-col gap-3'>
+          <div className='flex flex-[0.2] flex-col gap-4'>
             <Register />
             <Author />
           </div>

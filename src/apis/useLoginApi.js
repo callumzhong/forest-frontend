@@ -22,19 +22,15 @@ const useLoginApi = () => {
   const { isLoading, error, sendRequest } = useHttp();
   const { onAdd } = useContext(MessageContext);
   const authCtx = useContext(AuthContext);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const from = location.state?.form?.pathname || '/';
   const loginApi = useCallback(
-    (body) => {
+    (body, onSceneTransition) => {
       sendRequest({
         url: `${process.env.REACT_APP_API_SERVER}/api/user/sign_in`,
         method: 'POST',
         body: JSON.stringify(body),
       })
-        .then((data) => {
+        .then(async (data) => {
           authCtx.onLogin(data.token);
-          navigate(from, { replace: true });
         })
         .catch((error) => {
           if (!error.code) {
@@ -48,7 +44,7 @@ const useLoginApi = () => {
           onAdd('error', error.message, 1200);
         });
     },
-    [sendRequest, onAdd, navigate, from, authCtx],
+    [sendRequest, onAdd, authCtx],
   );
   return {
     isLoading,

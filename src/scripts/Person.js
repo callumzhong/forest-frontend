@@ -1,5 +1,7 @@
 import emitter, { eventName } from 'emitter';
+import Bait from './Bait';
 import GameObject from './GameObject';
+
 class Person extends GameObject {
   constructor(config) {
     super(config);
@@ -7,14 +9,13 @@ class Person extends GameObject {
     this.isStanding = false;
     this.isPlayerControlled =
       config.isPlayerControlled || false;
+    this.bait = config.bait ? new Bait(config.bait) : '';
     this.directionUpdate = {
       up: ['y', -4],
       down: ['y', 4],
       left: ['x', -4],
       right: ['x', 4],
     };
-    this.minAttack = 12;
-    this.maxAttack = 20;
   }
 
   update(state) {
@@ -54,7 +55,7 @@ class Person extends GameObject {
         return;
       }
       this.movingProgressRemaining = 12;
-      this.updateSprite();
+      this.updateSprite({ map: state.map });
       state.map.moveWall(this.x, this.y, this.direction);
     }
 
@@ -86,11 +87,24 @@ class Person extends GameObject {
       this.sprite.setAnimation('walk-' + this.direction);
       return;
     }
-    if (state.action === 'fish') {
-      this.sprite.setAnimation('fish-' + this.direction);
+    if (this.isPlayerControlled && state.action) {
+      this.sprite.setAnimation(
+        `${state.action}-` + this.direction,
+      );
+
+      if (state.action.includes('fish') && this.bait) {
+        this.bait.cast({
+          x: this.x,
+          y: this.y,
+          direction: this.direction,
+        });
+      }
       return;
     }
 
+    if (this.isPlayerControlled && this.bait) {
+      this.bait.pickUp();
+    }
     this.sprite.setAnimation('idle-' + this.direction);
   }
 }

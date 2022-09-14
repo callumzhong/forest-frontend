@@ -1,0 +1,26 @@
+.enterActive {
+  opacity: 0;
+  animation: scene-transition-fade-in 2s forwards;
+}
+
+.exitActive {
+  animation: scene-transition-fade-out 2s forwards;
+}
+
+@keyframes scene-transition-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scene-transition-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
