@@ -1,10 +1,20 @@
+import Button from 'modules/Button';
 import Card from 'modules/Card';
 import Modal from 'modules/Modal';
+import { useContext } from 'react';
+import AuthContext from 'store/authContext';
 
-const Setting = ({ isOpen, onClose }) => {
+const Setting = ({ isOpen, onOpen, onClose }) => {
+  const { onLogout } = useContext(AuthContext);
+  const logoutHandler = async () => {
+    onLogout();
+  };
   return (
     <>
-      <button className='hover:text-gray-500 active:text-gray-700'>
+      <button
+        onClick={onOpen}
+        className='hover:text-gray-500 active:text-gray-700'
+      >
         設定 [Esc]
       </button>
       <Modal
@@ -14,6 +24,11 @@ const Setting = ({ isOpen, onClose }) => {
       >
         <Card>
           <h2 className='mb-6 text-center text-xl'>設定</h2>
+          <ul className='text-center text-lg'>
+            <li>
+              <Button onClick={logoutHandler}>登出</Button>
+            </li>
+          </ul>
         </Card>
       </Modal>
     </>

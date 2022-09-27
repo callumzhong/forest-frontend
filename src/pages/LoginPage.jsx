@@ -3,23 +3,23 @@ import Character from 'components/Character/Character';
 import Login from 'components/Login/Login';
 import Message from 'components/Login/Message';
 import Register from 'components/Register/Register';
+import emitter, { eventName } from 'emitter';
 import Card from 'modules/Card';
 import Hero from 'modules/Hero';
 import { useContext, useEffect } from 'react';
 import AuthContext from 'store/authContext';
 import sleep from 'utils/sleep';
 
-const LoginPage = ({ onSceneTransition }) => {
-  const { onLogout, isAuth, character } =
-    useContext(AuthContext);
+const LoginPage = () => {
+  const { onLogout, isAuth } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
       await sleep(1000);
-      onSceneTransition(false);
+      emitter.emit(eventName.sceneTransition, false);
     };
     fetchData();
-  }, [onSceneTransition]);
+  }, []);
 
   useEffect(() => {
     onLogout();
@@ -34,12 +34,7 @@ const LoginPage = ({ onSceneTransition }) => {
         <Card gap={16}>
           <div className='flex-[0.8]'>
             {!isAuth && <Login />}
-            {isAuth && (
-              <Character
-                onSceneTransition={onSceneTransition}
-                onLogout={onLogout}
-              />
-            )}
+            {isAuth && <Character onLogout={onLogout} />}
             <Message />
           </div>
           <div className='flex flex-[0.2] flex-col gap-4'>

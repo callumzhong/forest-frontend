@@ -26,7 +26,7 @@ const useGameMessage = () => {
         ...e,
         type: 'textMessage',
       }));
-      onOpen();
+      onOpen(e.mode);
     };
 
     emitter.on(eventName.textMessage, messageHandler);

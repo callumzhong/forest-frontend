@@ -1,3 +1,4 @@
+import emitter, { eventName } from 'emitter';
 import Button from 'modules/Button.jsx';
 import Input from 'modules/Input.jsx';
 import { useContext } from 'react';
@@ -5,12 +6,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from 'store/authContext';
 import sleep from 'utils/sleep.js';
 import CharacterForm from './CharacterForm';
-const Character = ({ onLogout, onSceneTransition }) => {
+const Character = ({ onLogout }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.form?.pathname || '/';
   const startHandler = async () => {
-    onSceneTransition(true);
+    emitter.emit(eventName.sceneTransition, true);
     await sleep(1000);
     navigate(from, { replace: true });
   };

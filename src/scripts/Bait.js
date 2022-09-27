@@ -9,7 +9,6 @@ class Bait extends GameObject {
   }
 
   cast(state = {}) {
-    //TODO: 拋竿聲音
     if (this.hasCast) return;
     const randomNumber = getRandomNumber(2, 6);
     if (
@@ -30,7 +29,6 @@ class Bait extends GameObject {
   }
 
   pickUp() {
-    //TODO: 收竿聲音
     this.x = withGrid(9999);
     this.y = withGrid(9999);
     this.hasCast = false;

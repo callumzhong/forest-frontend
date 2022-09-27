@@ -2,6 +2,7 @@ import clsx from 'clsx';
 
 const widthStyle = {
   full: 'w-full',
+  inline: 'inline-block',
 };
 
 const Button = ({

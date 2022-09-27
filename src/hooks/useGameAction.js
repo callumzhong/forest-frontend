@@ -2,7 +2,7 @@ import { useCollectMaterialApi } from 'apis/useMaterial';
 import emitter, { eventName } from 'emitter';
 import { useCallback, useEffect, useState } from 'react';
 import getRandomNumber from 'utils/getRandomNumber';
-const useGameAction = ({ layer }) => {
+const useGameAction = ({ layer, getInventoryApi }) => {
   const [isAction, setIsAction] = useState(false);
   const [action, setAction] = useState();
   const [materialRate, setMaterialRate] = useState({
@@ -16,12 +16,8 @@ const useGameAction = ({ layer }) => {
   };
   const actionHandler = () => {
     const action = layer.checkForActionSpaces('action');
-    console.log(action);
-    setMaterialRate((pervState) => ({
-      ...pervState,
-      target: getRandomNumber(pervState.min, pervState.max),
-      current: 0,
-    }));
+    //TODO: 判斷 action 動作播放特定音效 (循環)
+    if (!action) return;
     if (!isAction) {
       setAction(action);
       setIsAction(true);
@@ -30,6 +26,12 @@ const useGameAction = ({ layer }) => {
       });
       return;
     }
+    //TODO: 此為關閉 action 動作音效 (循環)
+    setMaterialRate((pervState) => ({
+      ...pervState,
+      target: getRandomNumber(pervState.min, pervState.max),
+      current: 0,
+    }));
     setAction('');
     setIsAction(false);
     emitter.emit(eventName.keyboard, {
@@ -40,9 +42,10 @@ const useGameAction = ({ layer }) => {
     useCollectMaterialApi();
 
   const materialHandler = useCallback(
-    (state) => {
+    async (state) => {
       if (materialRate.current >= materialRate.target) {
-        collectMaterialApi(state.action);
+        await collectMaterialApi(state.action);
+        await getInventoryApi('MATERIAL');
         setMaterialRate((pervState) => ({
           ...pervState,
           target: getRandomNumber(

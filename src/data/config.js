@@ -88,7 +88,7 @@ const layers = {
     row: 13,
     column: 17,
     lowerSrc:
-      'https://res.cloudinary.com/callumzhong/image/upload/v1663104011/chalet_lower_i3qd0f.png',
+      'https://res.cloudinary.com/callumzhong/image/upload/v1664225714/chalet_lower_t6pg6a.png',
     walls: { ...CHALET_WALLS },
     cutsceneSpaces: {
       [asGridCoord(8, 12)]: [
@@ -153,11 +153,7 @@ const gameObjects = {
               mode: 'message',
               title:
                 '歡迎來到 FOREST 世界，以下向你說明操作：',
-              content: `使用 [ WSAD or 方向鍵 ]
-              移動到湖邊、樹、石頭，當右下角動作鍵亮起，點擊或使用
-              [ Space ]
-              進行採集，則採集所獲得的物品可以進入木屋內找尋 NPC
-              進行抽獎。`,
+              content: `使用 [ WSAD or 方向鍵 ] 移動到湖邊、樹、石頭，當右下角動作鍵亮起，點擊或使用 [ Space ] 進行採集。獲得的物品可以進入木屋內找尋 NPC 進行扭蛋。`,
               faceHero: 'npc1',
             },
           ],
@@ -409,7 +405,7 @@ const gameObjects = {
           events: [
             {
               type: 'textMessage',
-              mode: 'store',
+              mode: 'gashapon',
               faceHero: 'npc1',
             },
           ],

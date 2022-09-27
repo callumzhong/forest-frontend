@@ -4,9 +4,11 @@ ReactModal.setAppElement('#root');
 const containerStyles = {
   center:
     'absolute inset-0 m-auto h-max overflow-auto outline-none lg:inset-x-1/4 lg:inset-y-6 lg:w-auto',
+  dark: 'absolute inset-0 m-auto h-max w-max',
 };
 const overlayStyles = {
   center: 'fixed inset-0 bg-[rgba(0,0,0,0.5)]',
+  dark: 'fixed inset-0 bg-[rgba(0,0,0,0.8)]',
 };
 
 const Modal = ({

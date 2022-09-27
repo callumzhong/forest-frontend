@@ -8,5 +8,6 @@ export const eventName = {
   textMessage: 'TEXT_MESSAGE',
   changeMap: 'CHANGE_MAP',
   material: 'GET_MATERIAL',
+  sceneTransition:'SCENE_TRANSITION'
 };
 export default emitter;

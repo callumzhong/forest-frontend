@@ -1,18 +1,17 @@
-import { useGetMaterialApi } from 'apis/useMaterial';
+import { useGetInventoryApi } from 'apis/useInventoryApi';
 import Game from 'components/Game/Game';
 import GameFooter from 'components/GameFooter/GameFooter';
 import GameHeader from 'components/GameHeader/GameHeader';
-import Store from 'components/Store/Store';
-import TalkModal from 'components/TalkModal/TaskModal';
+import Gashapon from 'components/Gashapon/Gashapon';
+import Talk from 'components/Talk/Task';
 import useGameAction from 'hooks/useGameAction';
 import useGameEvent from 'hooks/useGameEvent';
 import useGameMap from 'hooks/useGameMap';
 import useGameMessage from 'hooks/useGameMessage';
 import useGameObjects from 'hooks/useGameObjects';
-import Modal from 'modules/Modal';
 import { useEffect, useMemo, useState } from 'react';
 
-const GamePage = ({ onSceneTransition }) => {
+const GamePage = () => {
   const [layer, setLayer] = useState({});
   const [map, setMap] = useState({
     name: 'home',
@@ -28,8 +27,11 @@ const GamePage = ({ onSceneTransition }) => {
     () => gameMap && gameObjects,
     [gameMap, gameObjects],
   );
+  const { data: materials, getInventoryApi } =
+    useGetInventoryApi();
+
   const { action, material, actionHandler, talkHandler } =
-    useGameAction({ layer });
+    useGameAction({ layer, getInventoryApi });
 
   const { isMounted, keyBoard } = useGameEvent({
     layer,
@@ -40,37 +42,31 @@ const GamePage = ({ onSceneTransition }) => {
     gameMap,
     setMap,
     map,
-    onSceneTransition,
     talkHandler,
     actionHandler,
   });
   const { isOpen, onClose, message } = useGameMessage();
 
-  const { data: materials, getMaterialApi } =
-    useGetMaterialApi();
-
   useEffect(() => {
-    getMaterialApi();
-  }, [getMaterialApi]);
-
+    getInventoryApi('MATERIAL');
+  }, [getInventoryApi]);
+  //TODO: 森林音效 map name === 'home'
+  //TODO: 屋內音效 map name === 'chalet'
+  //TODO: 偵測音效 action === fish 等於河邊 播放短暫河流聲
   return (
     <>
-      <Modal
-        onRequestClose={onClose}
-        contentLabel={'message-modal'}
-        isOpen={true}
-      >
-        {message.mode === 'message' && (
-          <TalkModal message={message} />
-        )}
-        {message.mode === 'store' && <Store />}
-        <Store />
-      </Modal>
+      <Talk
+        isOpen={isOpen === 'message'}
+        onClose={onClose}
+        message={message}
+      />
+      <Gashapon
+        isOpen={isOpen === 'gashapon'}
+        onClose={onClose}
+        getInventoryApi={getInventoryApi}
+      />
       <div className='absolute inset-0 m-auto overflow-hidden bg-black'>
-        <GameHeader
-          material={material}
-          materials={materials ?? []}
-        />
+        <GameHeader materials={materials} />
         {isMounted && <Game layer={layer} />}
         <GameFooter
           keyBoard={keyBoard}

@@ -2,7 +2,7 @@ import useAuthTokenApi from 'apis/useAuthTokenApi';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from 'store/authContext';
-const Auth = ({ children, onSceneTransition }) => {
+const Auth = ({ children }) => {
   const { isAuth, onLogin, character } =
     useContext(AuthContext);
   const { authTokenApi } = useAuthTokenApi();

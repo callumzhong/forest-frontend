@@ -17,7 +17,6 @@ const useGameEvent = ({
   setMap,
   layer,
   setLayer,
-  onSceneTransition,
   map: { onComplete },
   talkHandler,
   actionHandler,
@@ -80,13 +79,13 @@ const useGameEvent = ({
     (e) => {
       const { map, data, onComplete } = e;
       const changeMap = async () => {
-        onSceneTransition(true);
+        emitter.emit(eventName.sceneTransition, true);
         await sleep(1000);
         setMap({ name: map, data, onComplete });
       };
       changeMap();
     },
-    [onSceneTransition, setMap],
+    [setMap],
   );
 
   const keyBoardHandler = useCallback((e) => {
@@ -113,11 +112,11 @@ const useGameEvent = ({
     if (isEmptyObject(layer)) return;
     const mounted = async () => {
       layer.mountObjects();
-      onSceneTransition(false);
+      emitter.emit(eventName.sceneTransition, false);
       setIsMounted(true);
     };
     mounted();
-  }, [layer, onSceneTransition]);
+  }, [layer]);
 
   useEffect(() => {
     emitter.on(eventName.walk, checkForWalkHandler);
