@@ -7,3 +7,9 @@
   src: url('assets/font/zpix.woff2'),
     url('assets/font/zpix.ttf');
 }
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 1px 1px 5px rgb(0 0 0);
+  }
+}

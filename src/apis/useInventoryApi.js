@@ -1,16 +1,17 @@
 import useHttp from 'hooks/useHttp';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+import MessageContext from 'store/messageContext';
 
-const useGetInventoryApi = () => {
+const useGetInventoryApi = ({ type }) => {
   const { data, sendRequest } = useHttp();
   const getInventoryApi = useCallback(
-    (type) =>
+    () =>
       sendRequest({
         url: `${process.env.REACT_APP_API_SERVER}/api/inventory?type=${type}`,
         method: 'GET',
         useToken: true,
       }).catch(() => {}),
-    [sendRequest],
+    [sendRequest, type],
   );
   return { data, getInventoryApi };
 };
@@ -29,4 +30,32 @@ const useGetGashaponApi = () => {
   return { data, error, clear, getGashaponApi };
 };
 
-export { useGetInventoryApi, useGetGashaponApi };
+const usePostPropApi = () => {
+  const { sendRequest } = useHttp();
+  const { onAdd } = useContext(MessageContext);
+  const postPropApi = useCallback(
+    (id) =>
+      sendRequest({
+        url: `${process.env.REACT_APP_API_SERVER}/api/inventory/use_prop`,
+        method: 'POST',
+        body: JSON.stringify({
+          propId: id,
+        }),
+        useToken: true,
+      })
+        .then((res) => {
+          onAdd('info', res, 1200);
+        })
+        .catch((error) => {
+          onAdd('error', error.message, 1200);
+        }),
+    [sendRequest, onAdd],
+  );
+  return { postPropApi };
+};
+
+export {
+  useGetInventoryApi,
+  useGetGashaponApi,
+  usePostPropApi,
+};

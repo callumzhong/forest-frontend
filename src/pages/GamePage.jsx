@@ -27,11 +27,16 @@ const GamePage = () => {
     () => gameMap && gameObjects,
     [gameMap, gameObjects],
   );
-  const { data: materials, getInventoryApi } =
-    useGetInventoryApi();
+  const {
+    data: materials,
+    getInventoryApi: getInventoryByMaterialsApi,
+  } = useGetInventoryApi({ type: 'MATERIAL' });
 
   const { action, material, actionHandler, talkHandler } =
-    useGameAction({ layer, getInventoryApi });
+    useGameAction({
+      layer,
+      getInventoryByMaterialsApi,
+    });
 
   const { isMounted, keyBoard } = useGameEvent({
     layer,
@@ -48,8 +53,8 @@ const GamePage = () => {
   const { isOpen, onClose, message } = useGameMessage();
 
   useEffect(() => {
-    getInventoryApi('MATERIAL');
-  }, [getInventoryApi]);
+    getInventoryByMaterialsApi();
+  }, [getInventoryByMaterialsApi]);
   //TODO: 森林音效 map name === 'home'
   //TODO: 屋內音效 map name === 'chalet'
   //TODO: 偵測音效 action === fish 等於河邊 播放短暫河流聲
@@ -63,10 +68,14 @@ const GamePage = () => {
       <Gashapon
         isOpen={isOpen === 'gashapon'}
         onClose={onClose}
-        getInventoryApi={getInventoryApi}
+        getInventoryByMaterialsApi={
+          getInventoryByMaterialsApi
+        }
       />
       <div className='absolute inset-0 m-auto overflow-hidden bg-black'>
-        <GameHeader materials={materials} />
+        <GameHeader
+          materials={materials}
+        />
         {isMounted && <Game layer={layer} />}
         <GameFooter
           keyBoard={keyBoard}

@@ -4,51 +4,18 @@ import useModal from 'hooks/useModal';
 import { useEffect, useState } from 'react';
 import Inventory from './Inventory';
 import Setting from './Setting';
-const GameHeader = ({
-  materials: _materials,
-  material,
-}) => {
-  const { data, getInventoryApi } = useGetInventoryApi();
+const GameHeader = ({ materials: _materials }) => {
+  const {
+    data: props,
+    getInventoryApi: getInventoryByPropApi,
+  } = useGetInventoryApi({
+    type: 'PROP',
+  });
   const [materials, setMaterials] = useState([]);
-  // const [ore, setOre] = useState(0);
-  // const [wood, setWood] = useState(0);
-  // const [meat, setMeat] = useState(0);
-  // const matchAmountHandler = (type) => {
-  //   let result = '';
-  //   switch (type) {
-  //     case 'ORE':
-  //       result = ore;
-  //       break;
-  //     case 'WOOD':
-  //       result = wood;
-  //       break;
-  //     case 'MEAT':
-  //       result = meat;
-  //       break;
-  //     default:
-  //       throw new Error('不存在素材類型');
-  //   }
-  //   return result;
-  // };
-  // const matchSetAmountHandler = useCallback((value) => {
-  //   switch (value.type) {
-  //     case 'ORE':
-  //       setOre((prev) => prev + value.amount);
-  //       break;
-  //     case 'WOOD':
-  //       setWood((prev) => prev + value.amount);
-  //       break;
-  //     case 'MEAT':
-  //       setMeat((prev) => prev + value.amount);
-  //       break;
-  //     default:
-  //       throw new Error('不存在素材類型');
-  //   }
-  // }, []);
   const { isOpen, onOpen, onClose } = useModal();
   const openInventoryHandler = async () => {
     if (isOpen) return;
-    await getInventoryApi();
+    await getInventoryByPropApi();
     onOpen('inventory');
   };
   const openSettingHandler = () => {
@@ -67,17 +34,6 @@ const GameHeader = ({
     if (!_materials) return;
     setMaterials([..._materials]);
   }, [_materials]);
-  // useEffect(() => {
-  //   if (!Array.isArray(materials)) return;
-  //   materials.forEach((item) => {
-  //     matchSetAmountHandler(item);
-  //   });
-  // }, [materials, matchSetAmountHandler]);
-  // useEffect(() => {
-  //   if (material) {
-  //     matchSetAmountHandler(material);
-  //   }
-  // }, [material, matchSetAmountHandler]);
 
   return (
     <div className='absolute inset-x-0 top-0 flex items-center justify-between px-3 text-white'>
@@ -101,7 +57,8 @@ const GameHeader = ({
       <ul className='flex gap-3'>
         <li>
           <Inventory
-            data={data}
+            onUpdateProps={getInventoryByPropApi}
+            data={props}
             isOpen={isOpen === 'inventory'}
             onOpen={openInventoryHandler}
             onClose={onClose}

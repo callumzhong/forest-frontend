@@ -2,7 +2,10 @@ import { useCollectMaterialApi } from 'apis/useMaterial';
 import emitter, { eventName } from 'emitter';
 import { useCallback, useEffect, useState } from 'react';
 import getRandomNumber from 'utils/getRandomNumber';
-const useGameAction = ({ layer, getInventoryApi }) => {
+const useGameAction = ({
+  layer,
+  getInventoryByMaterialsApi,
+}) => {
   const [isAction, setIsAction] = useState(false);
   const [action, setAction] = useState();
   const [materialRate, setMaterialRate] = useState({
@@ -45,7 +48,7 @@ const useGameAction = ({ layer, getInventoryApi }) => {
     async (state) => {
       if (materialRate.current >= materialRate.target) {
         await collectMaterialApi(state.action);
-        await getInventoryApi('MATERIAL');
+        await getInventoryByMaterialsApi();
         setMaterialRate((pervState) => ({
           ...pervState,
           target: getRandomNumber(
@@ -61,7 +64,11 @@ const useGameAction = ({ layer, getInventoryApi }) => {
         current: pervState.current + 1,
       }));
     },
-    [collectMaterialApi, materialRate],
+    [
+      collectMaterialApi,
+      getInventoryByMaterialsApi,
+      materialRate,
+    ],
   );
 
   useEffect(() => {

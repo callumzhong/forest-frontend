@@ -6,12 +6,16 @@ import { useEffect } from 'react';
 import Machine from './Machine';
 
 //TODO: 轉蛋打開特效把轉蛋變大 打開後淡出消失
-const Gashapon = ({ isOpen, onClose, getInventoryApi }) => {
+const Gashapon = ({
+  isOpen,
+  onClose,
+  getInventoryByMaterialsApi,
+}) => {
   const { data, error, clear, getGashaponApi } =
     useGetGashaponApi();
   const openHandler = async () => {
     await getGashaponApi();
-    await getInventoryApi('MATERIAL');
+    await getInventoryByMaterialsApi();
   };
   const playHandler = () => {
     clear();
