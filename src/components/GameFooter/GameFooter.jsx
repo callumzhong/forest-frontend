@@ -20,17 +20,29 @@ const GameFooter = ({ onAction, onTalk, material }) => {
   }, [material]);
 
   return (
-    <div className='absolute inset-x-2 bottom-4 flex justify-between text-white'>
-      <div className='w-2/6 self-end text-yellow-500'>
-        {messages.map((message, index) => (
-          <p key={index}>{message}</p>
-        ))}
+    <>
+      <div className='absolute inset-x-2 bottom-4 flex justify-between text-white'>
+        <div className='w-2/6 self-end text-yellow-500'>
+          {messages.map((message, index) => (
+            <p key={index}>{message}</p>
+          ))}
+        </div>
+        <div className='flex flex-col gap-4 self-end'>
+          <ButtonTalk onClick={onTalk}>對話</ButtonTalk>
+          <ButtonAction onClick={onAction}>
+            動作
+          </ButtonAction>
+        </div>
       </div>
-      <div className='flex flex-col gap-4 self-end'>
-        <ButtonTalk onClick={onTalk}>對話</ButtonTalk>
-        <ButtonAction onClick={onAction}>動作</ButtonAction>
-      </div>
-    </div>
+      {/* <div className='absolute inset-x-0 bottom-0'>
+        <div className='h-1 border border-gray-500'>
+          <div className='h-full w-2/3 bg-gray-200'></div>
+        </div>
+        <div className='h-1 border border-gray-500'>
+          <div className='h-full w-1/3 bg-yellow-500'></div>
+        </div>
+      </div> */}
+    </>
   );
 };
 

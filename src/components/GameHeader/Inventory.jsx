@@ -53,42 +53,7 @@ const Inventory = ({
           <h2 className='mb-6 text-center text-2xl'>
             物品欄
           </h2>
-          {/* <ul
-            className='flex max-h-96 flex-col gap-4  overscroll-y-auto px-6  
-          scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-amber-600'
-          >
-            {Array.isArray(data) &&
-              data.map((item) => (
-                <li
-                  onChange={() => {
-                    console.log(5);
-                  }}
-                  key={item._id}
-                  className='flex items-center gap-6'
-                >
-                  <img
-                    width={32}
-                    height={32}
-                    src={item.url}
-                    alt={item.name}
-                  />
-                  <span className='mr-auto'>
-                    {item.name}
-                  </span>
-                  <span>數量</span>
-                  <span>{item.amount}</span>
-                  <Button
-                    onClick={() => {
-                      clickHandler(item._id);
-                    }}
-                    disabled={item.amount === 0}
-                  >
-                    使用
-                  </Button>
-                </li>
-              ))}
-          </ul> */}
-          <div className='flex gap-6'>
+          <div className='flex flex-col gap-6 sm:flex-row'>
             <ul className=' grid w-max grid-cols-4 grid-rows-5 gap-[10px] bg-gray-900 p-[15px] text-white'>
               {Array.isArray(props) &&
                 props.map((item) => {
@@ -120,9 +85,10 @@ const Inventory = ({
             <div className='basis-2/4'>
               {prop && (
                 <>
-                  <h3>說明</h3>
+                  <h3 className='mb-6'>{prop.name}</h3>
+                  <p>說明:</p>
                   <p className='mb-6'>{prop.description}</p>
-                  <h3>效果</h3>
+                  <p>效果:</p>
                   <p>
                     {prop.attributes.satiety > 0 &&
                       `增加飽食度 ${prop.attributes.satiety}`}
