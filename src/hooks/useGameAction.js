@@ -1,4 +1,5 @@
 import { useCollectMaterialApi } from 'apis/useMaterial';
+import { audio } from 'data/config';
 import emitter, { eventName } from 'emitter';
 import { useCallback, useEffect, useState } from 'react';
 import getRandomNumber from 'utils/getRandomNumber';
@@ -19,7 +20,17 @@ const useGameAction = ({
   };
   const actionHandler = () => {
     const action = layer.checkForActionSpaces('action');
+
     //TODO: 判斷 action 動作播放特定音效 (循環)
+    if (audio.chop.playing()) {
+      audio.chop.stop();
+    }
+    if (audio.fish.playing()) {
+      audio.fish.stop();
+    }
+    if (audio.mining.playing()) {
+      audio.mining.stop();
+    }
     if (!action) return;
     if (!isAction) {
       setAction(action);

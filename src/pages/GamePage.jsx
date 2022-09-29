@@ -4,6 +4,7 @@ import GameFooter from 'components/GameFooter/GameFooter';
 import GameHeader from 'components/GameHeader/GameHeader';
 import Gashapon from 'components/Gashapon/Gashapon';
 import Talk from 'components/Talk/Task';
+import { audio } from 'data/config';
 import useGameAction from 'hooks/useGameAction';
 import useGameEvent from 'hooks/useGameEvent';
 import useGameMap from 'hooks/useGameMap';
@@ -55,9 +56,14 @@ const GamePage = () => {
   useEffect(() => {
     getInventoryByMaterialsApi();
   }, [getInventoryByMaterialsApi]);
-  //TODO: 森林音效 map name === 'home'
-  //TODO: 屋內音效 map name === 'chalet'
-  //TODO: 偵測音效 action === fish 等於河邊 播放短暫河流聲
+  useEffect(() => {
+    audio.map.play();
+    return () => {
+      if (audio.map.playing()) {
+        audio.map.unload();
+      }
+    };
+  }, []);
   return (
     <>
       <Talk
@@ -73,9 +79,7 @@ const GamePage = () => {
         }
       />
       <div className='absolute inset-0 m-auto overflow-hidden bg-black'>
-        <GameHeader
-          materials={materials}
-        />
+        <GameHeader materials={materials} />
         {isMounted && <Game layer={layer} />}
         <GameFooter
           keyBoard={keyBoard}

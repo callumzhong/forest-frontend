@@ -1,3 +1,4 @@
+import { audio } from 'data/config';
 import emitter, { eventName } from 'emitter';
 import withGrid from 'utils/withGrid';
 
@@ -9,6 +10,7 @@ class Sprite {
     this.image.onload = () => {
       this.isLoaded = true;
     };
+    this.isAudio = false;
     this.width = config.width || 16;
     this.height = config.height || 32;
     this.zoom = config.zoom || 1;
@@ -272,6 +274,27 @@ class Sprite {
     this.animationFrameProgress = this.animationFrameLimit;
     this.currentAnimationFrame += 1;
 
+    if (
+      this.currentAnimation.includes('chop') &&
+      !this.isAudio
+    ) {
+      audio.chop.play();
+      this.isAudio = true;
+    }
+    if (
+      this.currentAnimation.includes('mining') &&
+      !this.isAudio
+    ) {
+      audio.mining.play();
+      this.isAudio = true;
+    }
+    if (
+      this.currentAnimation.includes('fish') &&
+      !this.isAudio
+    ) {
+      audio.fish.play();
+      this.isAudio = true;
+    }
     if (this.frame === undefined) {
       if (
         this.gameObject.id === 'hero' &&
@@ -284,6 +307,7 @@ class Sprite {
         });
       }
       this.currentAnimationFrame = 0;
+      this.isAudio = false;
     }
   }
 

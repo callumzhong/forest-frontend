@@ -1,8 +1,14 @@
+import CHOP_EFFECT_AUDIO from 'assets/audio/chop_effect.wav';
+import FISH_EFFECT_AUDIO from 'assets/audio/fish_effect.mp3';
+import HUNT_AUDIO from 'assets/audio/hunt.wav';
+import MAP_AUDIO from 'assets/audio/map.wav';
+import MINING_EFFECT_AUDIO from 'assets/audio/mining_effect.wav';
+import WALK_EFFECT_AUDIO from 'assets/audio/walk_effect.wav';
 import CHALET_WALLS from 'data/chaletWalls.json';
 import HOME_WALLS from 'data/homeWalls.json';
+import { Howl } from 'howler';
 import asGridCoord from 'utils/asGridCoord';
 import withGrid from 'utils/withGrid';
-
 const layers = {
   home: {
     map: 'home',
@@ -415,4 +421,35 @@ const gameObjects = {
   },
 };
 
-export { layers, gameObjects };
+const audio = {
+  home: new Howl({
+    src: HUNT_AUDIO,
+    html5: true,
+    loop: true,
+    volume: 0.8,
+  }),
+  map: new Howl({
+    src: MAP_AUDIO,
+    html5: true,
+    loop: true,
+    volume: 0.8,
+  }),
+  walk: new Howl({
+    src: WALK_EFFECT_AUDIO,
+    volume: 0.3,
+  }),
+  chop: new Howl({
+    src: CHOP_EFFECT_AUDIO,
+    volume: 0.3,
+  }),
+  mining: new Howl({
+    src: MINING_EFFECT_AUDIO,
+    volume: 0.3,
+  }),
+  fish: new Howl({
+    src: FISH_EFFECT_AUDIO,
+    volume: 0.3,
+  }),
+};
+
+export { layers, gameObjects, audio };

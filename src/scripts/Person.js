@@ -1,3 +1,4 @@
+import { audio } from 'data/config';
 import emitter, { eventName } from 'emitter';
 import Bait from './Bait';
 import GameObject from './GameObject';
@@ -54,6 +55,7 @@ class Person extends GameObject {
 
         return;
       }
+      audio.walk.play();
       this.movingProgressRemaining = 12;
       this.updateSprite({ map: state.map });
       state.map.moveWall(this.x, this.y, this.direction);

@@ -3,6 +3,7 @@ import Character from 'components/Character/Character';
 import Login from 'components/Login/Login';
 import Message from 'components/Login/Message';
 import Register from 'components/Register/Register';
+import { audio } from 'data/config';
 import emitter, { eventName } from 'emitter';
 import Card from 'modules/Card';
 import Hero from 'modules/Hero';
@@ -24,6 +25,15 @@ const LoginPage = () => {
   useEffect(() => {
     onLogout();
   }, [onLogout]);
+
+  useEffect(() => {
+    audio.home.play();
+    return () => {
+      if (audio.home.playing()) {
+        audio.home.unload();
+      }
+    };
+  }, []);
 
   return (
     <Hero className={'h-screen py-6'}>
