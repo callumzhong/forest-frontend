@@ -1,6 +1,6 @@
 import CHOP_EFFECT_AUDIO from 'assets/audio/chop_effect.wav';
+import EXPANSION_AUDIO from 'assets/audio/expansion.wav';
 import FISH_EFFECT_AUDIO from 'assets/audio/fish_effect.mp3';
-import HUNT_AUDIO from 'assets/audio/hunt.wav';
 import MAP_AUDIO from 'assets/audio/map.wav';
 import MINING_EFFECT_AUDIO from 'assets/audio/mining_effect.wav';
 import WALK_EFFECT_AUDIO from 'assets/audio/walk_effect.wav';
@@ -423,7 +423,7 @@ const gameObjects = {
 
 const audio = {
   home: new Howl({
-    src: HUNT_AUDIO,
+    src: EXPANSION_AUDIO,
     loop: true,
   }),
   map: new Howl({
