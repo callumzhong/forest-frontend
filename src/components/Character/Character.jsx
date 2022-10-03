@@ -17,6 +17,7 @@ const Character = ({ onLogout }) => {
   };
   const { onGetCharacter, character } =
     useContext(AuthContext);
+
   if (!character) {
     return (
       <>
@@ -41,6 +42,7 @@ const Character = ({ onLogout }) => {
         />
         <div className='my-6 flex justify-end gap-4'>
           <Button onClick={startHandler}>進入遊戲</Button>
+          <Button onClick={onLogout}>登出</Button>
         </div>
       </>
     )

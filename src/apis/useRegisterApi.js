@@ -1,5 +1,6 @@
 import useHttp from 'hooks/useHttp';
 import { useCallback, useContext } from 'react';
+import AuthContext from 'store/authContext';
 import MessageContext from 'store/messageContext';
 import * as yup from 'yup';
 
@@ -27,7 +28,7 @@ const schema = yup
 
 const useRegisterApi = () => {
   const { onAdd } = useContext(MessageContext);
-
+  const { onLogin } = useContext(AuthContext);
   const { isLoading, data, error, sendRequest } = useHttp();
   const registerApi = useCallback(
     (body) =>
@@ -38,11 +39,12 @@ const useRegisterApi = () => {
       })
         .then((data) => {
           onAdd('success', '註冊成功', 1200);
+          onLogin(data.token);
         })
         .catch((error) => {
           onAdd('error', error.message, 1200);
         }),
-    [sendRequest, onAdd],
+    [sendRequest, onLogin, onAdd],
   );
 
   return {

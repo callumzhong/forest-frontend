@@ -8,7 +8,12 @@ const Author = () => {
 
   return (
     <>
-      <Button width='full' onClick={onOpen}>
+      <Button
+        width='full'
+        onClick={() => {
+          onOpen();
+        }}
+      >
         作者的話
       </Button>
       <Modal

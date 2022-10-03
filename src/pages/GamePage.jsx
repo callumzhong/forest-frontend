@@ -12,6 +12,7 @@ import useGameMessage from 'hooks/useGameMessage';
 import useGameObjects from 'hooks/useGameObjects';
 import { useEffect, useMemo, useState } from 'react';
 
+let clicked = false;
 const GamePage = () => {
   const [layer, setLayer] = useState({});
   const [map, setMap] = useState({
@@ -56,12 +57,11 @@ const GamePage = () => {
   useEffect(() => {
     getInventoryByMaterialsApi();
   }, [getInventoryByMaterialsApi]);
+
   useEffect(() => {
     audio.map.play();
     return () => {
-      if (audio.map.playing()) {
-        audio.map.unload();
-      }
+      audio.map.stop();
     };
   }, []);
   return (

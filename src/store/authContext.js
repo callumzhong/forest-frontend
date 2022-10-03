@@ -1,29 +1,30 @@
+import useAuthTokenApi from 'apis/useAuthTokenApi';
 import { useGetCharacterApi } from 'apis/useCharacterApi';
 import React, { useCallback, useState } from 'react';
 
 const AuthContext = React.createContext({
   isAuth: false,
   character: {},
-  onLogin: () => {},
+  onLogin: async () => {},
   onLogout: () => {},
-  onGetCharacter: () => {},
+  onGetCharacter: async () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [isAuth, setIsAuth] = useState(false);
+  const { authTokenApi } = useAuthTokenApi();
   const { getCharacterApi, data, clear } =
     useGetCharacterApi();
   const loginHandler = useCallback(
-    (token) => {
-      if (token) {
-        localStorage.setItem('authorization', token);
+    (_token) => {
+      if (_token) {
+        localStorage.setItem('authorization', _token);
       }
-
-      getCharacterApi().then((val) => {
+      return authTokenApi().then(() => {
         setIsAuth(true);
       });
     },
-    [getCharacterApi],
+    [authTokenApi],
   );
 
   const logoutHandler = useCallback(() => {

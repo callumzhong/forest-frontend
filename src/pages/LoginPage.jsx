@@ -12,7 +12,8 @@ import AuthContext from 'store/authContext';
 import sleep from 'utils/sleep';
 
 const LoginPage = () => {
-  const { onLogout, isAuth } = useContext(AuthContext);
+  const { onLogout, isAuth, onGetCharacter } =
+    useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,11 +30,15 @@ const LoginPage = () => {
   useEffect(() => {
     audio.home.play();
     return () => {
-      if (audio.home.playing()) {
-        audio.home.unload();
-      }
+      audio.home.stop();
     };
   }, []);
+
+  useEffect(() => {
+    if (isAuth === true) {
+      onGetCharacter().catch(() => {});
+    }
+  }, [isAuth, onGetCharacter]);
 
   return (
     <Hero className={'h-screen py-6'}>

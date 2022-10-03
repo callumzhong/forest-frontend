@@ -424,15 +424,11 @@ const gameObjects = {
 const audio = {
   home: new Howl({
     src: HUNT_AUDIO,
-    html5: true,
     loop: true,
-    volume: 0.8,
   }),
   map: new Howl({
     src: MAP_AUDIO,
-    html5: true,
     loop: true,
-    volume: 0.8,
   }),
   walk: new Howl({
     src: WALK_EFFECT_AUDIO,

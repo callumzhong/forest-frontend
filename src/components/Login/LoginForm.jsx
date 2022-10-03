@@ -1,10 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import useLoginApi, { schema } from 'apis/useLoginApi';
 import Button from 'modules/Button';
 import Input from 'modules/Input';
 import { useForm } from 'react-hook-form';
 
-const LoginForm = ({ onSceneTransition }) => {
+const LoginForm = ({ schema, onSubmit, isLoading }) => {
   const {
     watch,
     register,
@@ -17,9 +16,6 @@ const LoginForm = ({ onSceneTransition }) => {
     },
     resolver: yupResolver(schema),
   });
-  const { isLoading, loginApi } = useLoginApi();
-  const onSubmit = (data) =>
-    loginApi(data, onSceneTransition);
   const watched = watch();
   return (
     <form

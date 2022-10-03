@@ -2,12 +2,9 @@ import Button from 'modules/Button';
 import Input from 'modules/Input';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import useRegister, { schema } from 'apis/useRegisterApi';
 import { useForm } from 'react-hook-form';
 
-const RegisterForm = () => {
-  const { registerApi, isLoading } = useRegister();
-
+const RegisterForm = ({ onSubmit, schema, isLoading }) => {
   const {
     watch,
     register,
@@ -22,14 +19,14 @@ const RegisterForm = () => {
     },
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => {
-    registerApi(data);
+  const submitHandler = (data) => {
+    onSubmit(data);
   };
   const watched = watch();
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(submitHandler)}
       className='mb-6 text-right'
     >
       <Input

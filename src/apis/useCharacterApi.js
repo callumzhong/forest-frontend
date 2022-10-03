@@ -19,7 +19,7 @@ const useGetCharacterApi = () => {
         url: `${process.env.REACT_APP_API_SERVER}/api/character`,
         method: 'GET',
         useToken: true,
-      }).catch(() => {}),
+      }),
     [sendRequest],
   );
 

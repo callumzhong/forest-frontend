@@ -1,6 +1,5 @@
 import useHttp from 'hooks/useHttp';
 import { useCallback, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from 'store/authContext';
 import MessageContext from 'store/messageContext';
 import * as yup from 'yup';
@@ -21,16 +20,16 @@ const schema = yup
 const useLoginApi = () => {
   const { isLoading, error, sendRequest } = useHttp();
   const { onAdd } = useContext(MessageContext);
-  const authCtx = useContext(AuthContext);
+  const { onLogin } = useContext(AuthContext);
   const loginApi = useCallback(
-    (body, onSceneTransition) => {
+    (body) => {
       sendRequest({
         url: `${process.env.REACT_APP_API_SERVER}/api/user/sign_in`,
         method: 'POST',
         body: JSON.stringify(body),
       })
         .then(async (data) => {
-          authCtx.onLogin(data.token);
+          onLogin(data.token);
         })
         .catch((error) => {
           if (!error.code) {
@@ -44,7 +43,7 @@ const useLoginApi = () => {
           onAdd('error', error.message, 1200);
         });
     },
-    [sendRequest, onAdd, authCtx],
+    [sendRequest, onAdd, onLogin],
   );
   return {
     isLoading,
