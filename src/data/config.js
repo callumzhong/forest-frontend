@@ -425,10 +425,12 @@ const audio = {
   home: new Howl({
     src: EXPANSION_AUDIO,
     loop: true,
+    volume: 0.5,
   }),
   map: new Howl({
     src: MAP_AUDIO,
     loop: true,
+    volume: 0.5,
   }),
   walk: new Howl({
     src: WALK_EFFECT_AUDIO,
