@@ -10,9 +10,16 @@ import useGameEvent from 'hooks/useGameEvent';
 import useGameMap from 'hooks/useGameMap';
 import useGameMessage from 'hooks/useGameMessage';
 import useGameObjects from 'hooks/useGameObjects';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
+import AuthContext from 'store/authContext';
 
 const GamePage = () => {
+  const { onUpdateCharacter } = useContext(AuthContext);
   const [layer, setLayer] = useState({});
   const [map, setMap] = useState({
     name: 'home',
@@ -63,6 +70,12 @@ const GamePage = () => {
       audio.map.stop();
     };
   }, []);
+  useEffect(() => {
+    const intervalID = setInterval(onUpdateCharacter, 300000);
+    return () => {
+      clearInterval(intervalID);
+    };
+  }, [onUpdateCharacter]);
   return (
     <>
       <Talk

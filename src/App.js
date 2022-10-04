@@ -26,7 +26,6 @@ function App() {
       );
     };
   }, [sceneTransitionHandler]);
-  console.log(windowSize);
   if (windowSize === 'mobile') {
     return (
       <div className='flex h-screen w-full flex-col items-center justify-center bg-black p-4 text-xl text-white'>

@@ -58,8 +58,32 @@ const useCreateCharacterApi = () => {
   };
 };
 
+const useUpdateCharacterAttributesApi = () => {
+  const { isLoading, data, clear, error, sendRequest } =
+    useHttp();
+  const { onAdd } = useContext(MessageContext);
+
+  const updateCharacterAttributesApi = useCallback(
+    (id, body) =>
+      sendRequest({
+        url: `${process.env.REACT_APP_API_SERVER}/api/character/${id}`,
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        useToken: true,
+      }).catch((error) => {
+        onAdd('error', error.message, 1200);
+      }),
+    [sendRequest, onAdd],
+  );
+
+  return {
+    updateCharacterAttributesApi,
+  };
+};
+
 export {
   useGetCharacterApi,
   useCreateCharacterApi,
+  useUpdateCharacterAttributesApi,
   createCharacterSchema,
 };
