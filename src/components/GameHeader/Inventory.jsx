@@ -93,6 +93,8 @@ const Inventory = ({
                   <p>
                     {prop.attributes.satiety > 0 &&
                       `增加飽食度 ${prop.attributes.satiety}`}
+                  </p>
+                  <p>
                     {prop.attributes.mood > 0 &&
                       `增加情緒值 ${prop.attributes.mood}`}
                   </p>

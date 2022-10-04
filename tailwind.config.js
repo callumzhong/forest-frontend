@@ -17,6 +17,7 @@ module.exports = {
       animation: {
         fill: 'fill 1s linear',
         character: 'character 1s steps(4) infinite',
+        'spin-slow': 'spin 3s linear infinite',
       },
     },
   },

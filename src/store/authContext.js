@@ -20,15 +20,12 @@ const AuthContext = React.createContext({
 
 export const AuthContextProvider = (props) => {
   const [isAuth, setIsAuth] = useState(false);
-  const [character, setCharacter] = useState({});
   const { authTokenApi } = useAuthTokenApi();
   const { updateCharacterAttributesApi } =
     useUpdateCharacterAttributesApi();
-  const {
-    getCharacterApi,
-    data: characterData,
-    clear: characterDataClear,
-  } = useGetCharacterApi();
+  const [character, setCharacter] = useState();
+  const { getCharacterApi, data, clear } =
+    useGetCharacterApi();
 
   const updateCharacterAttributesHandler =
     useCallback(async () => {
@@ -59,16 +56,15 @@ export const AuthContextProvider = (props) => {
 
   const logoutHandler = useCallback(() => {
     localStorage.removeItem('authorization');
-    characterDataClear();
+    clear();
     setIsAuth(false);
-  }, [characterDataClear]);
+  }, [clear]);
 
   useEffect(() => {
-    if (characterData) {
-      setCharacter(characterData);
+    if (data) {
+      setCharacter(data);
     }
-  }, [characterData]);
-
+  }, [data]);
   return (
     <AuthContext.Provider
       value={{

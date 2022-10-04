@@ -40,7 +40,7 @@ const Gashapon = ({
             onPlay={playHandler}
             onOpen={openHandler}
           />
-          <div className='relative flex-auto pb-8'>
+          <div className='relative flex-auto'>
             <p className='mb-6'>
               歡迎使用轉蛋機，需要收取材料如下:
             </p>
@@ -51,13 +51,23 @@ const Gashapon = ({
             </ul>
             <hr className='my-6' />
             <p className='mb-6'>結果:</p>
-            <p
-              className={clsx('text-center', {
-                'text-red-500': error,
-              })}
+            <div
+              className={clsx(
+                'flex items-center justify-center gap-2 text-center',
+                {
+                  'text-red-500': error,
+                },
+              )}
             >
-              {data || error}
-            </p>
+              {data && data.url && (
+                <img
+                  className='h-8 w-8'
+                  src={data.url}
+                  alt=''
+                />
+              )}
+              <span>{(data && data.name) || error}</span>
+            </div>
           </div>
         </div>
       </Card>

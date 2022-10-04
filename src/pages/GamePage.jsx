@@ -14,10 +14,9 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from 'react';
 import AuthContext from 'store/authContext';
-
 const GamePage = () => {
   const { onUpdateCharacter } = useContext(AuthContext);
   const [layer, setLayer] = useState({});
@@ -65,13 +64,23 @@ const GamePage = () => {
   }, [getInventoryByMaterialsApi]);
 
   useEffect(() => {
-    audio.map.play();
+    const listener = () => {
+      if (!audio.map.playing()) {
+        audio.map.play();
+      }
+    };
+    window.addEventListener('keydown', listener);
     return () => {
+      window.removeEventListener('keydown', listener);
       audio.map.stop();
     };
   }, []);
+
   useEffect(() => {
-    const intervalID = setInterval(onUpdateCharacter, 300000);
+    const intervalID = setInterval(
+      onUpdateCharacter,
+      300000,
+    );
     return () => {
       clearInterval(intervalID);
     };
