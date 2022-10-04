@@ -1,4 +1,5 @@
-import Button from 'modules/Button';
+import clsx from 'clsx';
+import { audio } from 'data/config';
 import { useCallback, useEffect, useState } from 'react';
 import getRandomNumber from 'utils/getRandomNumber';
 import sleep from 'utils/sleep';
@@ -59,6 +60,8 @@ const configs = [
 
 const Machine = ({ onOpen, onPlay }) => {
   const [balls, setBalls] = useState([]);
+  const [isAnimationButton, setIsAnimationButton] =
+    useState(false);
   const [isAnimation, setIsAnimation] = useState(false);
   const [selectedBall, setSelectedBall] = useState();
   const updateBallsHandler = useCallback(() => {
@@ -81,7 +84,11 @@ const Machine = ({ onOpen, onPlay }) => {
   }, []);
   const playHandler = async (e) => {
     //TODO: 轉蛋音效
+    audio.gashapon.play();
     onPlay();
+    setIsAnimationButton(true);
+    await sleep(2700);
+    setIsAnimationButton(false);
     setIsAnimation(true);
     await sleep(1000);
     setSelectedBall(balls[0]);
@@ -127,12 +134,20 @@ const Machine = ({ onOpen, onPlay }) => {
               />
             )}
           </div>
-          <Button
+          <button
             disabled={selectedBall}
             onClick={playHandler}
+            className='h-12 w-12 rounded-full border-[6px] border-double'
           >
-            啟動
-          </Button>
+            <div
+              className={clsx(
+                'm-auto h-full w-2 bg-white',
+                { 'animate-spin-slow': isAnimationButton },
+              )}
+            >
+              <div className='m-auto h-full w-1 bg-gray-500'></div>
+            </div>
+          </button>
         </div>
         <div className='absolute inset-x-0 bottom-0 h-4 rounded bg-red-500 shadow-md shadow-red-400'></div>
       </div>

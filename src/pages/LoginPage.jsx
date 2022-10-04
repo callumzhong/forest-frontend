@@ -28,8 +28,14 @@ const LoginPage = () => {
   }, [onLogout]);
 
   useEffect(() => {
-    audio.home.play();
+    const listener = () => {
+      if (!audio.home.playing()) {
+        audio.home.play();
+      }
+    };
+    window.addEventListener('click', listener);
     return () => {
+      window.removeEventListener('click', listener);
       audio.home.stop();
     };
   }, []);
