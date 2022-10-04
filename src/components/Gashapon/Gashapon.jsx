@@ -53,7 +53,7 @@ const Gashapon = ({
             <p className='mb-6'>結果:</p>
             <div
               className={clsx(
-                'flex items-center justify-center gap-4 text-center',
+                'flex items-center justify-center gap-2 text-center',
                 {
                   'text-red-500': error,
                 },
@@ -61,7 +61,7 @@ const Gashapon = ({
             >
               {data && data.url && (
                 <img
-                  className='h-full'
+                  className='h-8 w-8'
                   src={data.url}
                   alt=''
                 />
