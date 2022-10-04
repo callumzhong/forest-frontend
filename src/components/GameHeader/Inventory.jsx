@@ -7,7 +7,7 @@ import MessageContext from 'store/messageContext';
 const Inventory = ({
   isOpen,
   data: _props,
-  onUpdateProps,
+  onUpdate,
   onOpen,
   onClose,
 }) => {
@@ -24,7 +24,7 @@ const Inventory = ({
       return;
     }
     await postPropApi(item._id);
-    await onUpdateProps();
+    await onUpdate();
   };
   const closeHandler = () => {
     setProp();
@@ -59,6 +59,7 @@ const Inventory = ({
                 props.map((item) => {
                   return (
                     <li
+                      key={item._id}
                       onDoubleClick={() => {
                         doubleClickHandler(item);
                       }}

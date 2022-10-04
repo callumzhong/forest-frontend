@@ -1,6 +1,13 @@
 import useAuthTokenApi from 'apis/useAuthTokenApi';
-import { useGetCharacterApi } from 'apis/useCharacterApi';
-import React, { useCallback, useState } from 'react';
+import {
+  useGetCharacterApi,
+  useUpdateCharacterAttributesApi,
+} from 'apis/useCharacterApi';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 const AuthContext = React.createContext({
   isAuth: false,
@@ -8,13 +15,36 @@ const AuthContext = React.createContext({
   onLogin: async () => {},
   onLogout: () => {},
   onGetCharacter: async () => {},
+  onUpdateCharacter: async () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [isAuth, setIsAuth] = useState(false);
+  const [character, setCharacter] = useState({});
   const { authTokenApi } = useAuthTokenApi();
-  const { getCharacterApi, data, clear } =
-    useGetCharacterApi();
+  const { updateCharacterAttributesApi } =
+    useUpdateCharacterAttributesApi();
+  const {
+    getCharacterApi,
+    data: characterData,
+    clear: characterDataClear,
+  } = useGetCharacterApi();
+
+  const updateCharacterAttributesHandler =
+    useCallback(async () => {
+      const { attributes } = character;
+
+      await updateCharacterAttributesApi(character._id, {
+        satiety: attributes.satiety - 2,
+        mood: attributes.mood - 1,
+      });
+      await getCharacterApi();
+    }, [
+      character,
+      updateCharacterAttributesApi,
+      getCharacterApi,
+    ]);
+
   const loginHandler = useCallback(
     (_token) => {
       if (_token) {
@@ -29,18 +59,25 @@ export const AuthContextProvider = (props) => {
 
   const logoutHandler = useCallback(() => {
     localStorage.removeItem('authorization');
-    clear();
+    characterDataClear();
     setIsAuth(false);
-  }, [clear]);
+  }, [characterDataClear]);
+
+  useEffect(() => {
+    if (characterData) {
+      setCharacter(characterData);
+    }
+  }, [characterData]);
 
   return (
     <AuthContext.Provider
       value={{
         isAuth,
-        character: data,
+        character: character,
         onLogin: loginHandler,
         onLogout: logoutHandler,
         onGetCharacter: getCharacterApi,
+        onUpdateCharacter: updateCharacterAttributesHandler,
       }}
     >
       {props.children}
