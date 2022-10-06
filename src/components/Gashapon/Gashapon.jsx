@@ -42,7 +42,7 @@ const Gashapon = ({
           />
           <div className='relative flex-auto'>
             <p className='mb-6'>
-              歡迎使用轉蛋機，需要收取材料如下:
+              歡迎使用扭蛋機，需要收取材料如下:
             </p>
             <ul className='flex flex-col gap-4'>
               <li>消耗魚肉 * 50</li>
