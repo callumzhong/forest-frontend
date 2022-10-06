@@ -160,7 +160,7 @@ const gameObjects = {
               mode: 'message',
               title:
                 '歡迎來到 FOREST 世界，以下向你說明操作：',
-              content: `使用 [ WSAD or 方向鍵 ] 移動到湖邊、樹、石頭，當右下角動作鍵亮起，點擊或使用 [ Space ] 進行採集。獲得的物品可以進入木屋內找尋 NPC 進行扭蛋。`,
+              content: `使用 [ WSAD or 方向鍵 ] 移動到湖邊、樹、石頭邊，點擊或使用 [ Space ] 進行採集。獲得的物品可以進入木屋內找尋 NPC 進行扭蛋抽獎。`,
               faceHero: 'npc1',
             },
           ],
