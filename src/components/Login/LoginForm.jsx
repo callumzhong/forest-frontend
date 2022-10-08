@@ -17,6 +17,7 @@ const LoginForm = ({ schema, onSubmit, isLoading }) => {
     resolver: yupResolver(schema),
   });
   const watched = watch();
+  console.log(errors);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

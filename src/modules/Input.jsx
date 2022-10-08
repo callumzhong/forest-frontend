@@ -20,6 +20,7 @@ const Input = React.forwardRef(
     },
     ref,
   ) => {
+    console.log(error);
     const id = useState(uniqid())[0];
     return (
       <div className='flex border-b border-l-2 border-r-2 border-t border-amber-600 text-left first-of-type:border-t-2 last-of-type:mb-6 last-of-type:border-b-2 '>
