@@ -427,33 +427,32 @@ const audio = {
     src: EXPANSION_AUDIO,
     loop: true,
     html5: true,
-    volume: 0.2,
+    volume: 0.8,
   }),
   map: new Howl({
     src: MAP_AUDIO,
     loop: true,
     html5: true,
-    volume: 0.4,
   }),
   walk: new Howl({
     src: WALK_EFFECT_AUDIO,
-    volume: 0.2,
+    volume: 0.6,
   }),
   chop: new Howl({
     src: CHOP_EFFECT_AUDIO,
-    volume: 0.2,
+    volume: 0.6,
   }),
   mining: new Howl({
     src: MINING_EFFECT_AUDIO,
-    volume: 0.2,
+    volume: 0.6,
   }),
   fish: new Howl({
     src: FISH_EFFECT_AUDIO,
-    volume: 0.2,
+    volume: 0.6,
   }),
   gashapon: new Howl({
     src: GASHAPON_EFFECT_AUDIO,
-    volume: 0.2,
+    volume: 0.6,
   }),
 };
 

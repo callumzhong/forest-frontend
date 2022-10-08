@@ -59,8 +59,7 @@ const useCreateCharacterApi = () => {
 };
 
 const useUpdateCharacterAttributesApi = () => {
-  const { isLoading, data, clear, error, sendRequest } =
-    useHttp();
+  const { sendRequest } = useHttp();
   const { onAdd } = useContext(MessageContext);
 
   const updateCharacterAttributesApi = useCallback(
@@ -81,9 +80,32 @@ const useUpdateCharacterAttributesApi = () => {
   };
 };
 
+const useDeleteCharacterDeathApi = () => {
+  const { sendRequest } = useHttp();
+  const { onAdd } = useContext(MessageContext);
+
+  const deleteCharacterDeathApi = useCallback(
+    (id) =>
+      sendRequest({
+        url: `${process.env.REACT_APP_API_SERVER}/api/character/death/${id}`,
+        method: 'DELETE',
+        useToken: true,
+      }).catch((error) => {
+        console.log(error);
+        onAdd('error', error.message, 1200);
+      }),
+    [sendRequest, onAdd],
+  );
+
+  return {
+    deleteCharacterDeathApi,
+  };
+};
+
 export {
   useGetCharacterApi,
   useCreateCharacterApi,
   useUpdateCharacterAttributesApi,
   createCharacterSchema,
+  useDeleteCharacterDeathApi,
 };
