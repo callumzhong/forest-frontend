@@ -6,7 +6,9 @@ import {
 } from 'react';
 import MessageContext from 'store/messageContext';
 import { useNavigate } from '../../node_modules/react-router-dom/index';
-let ws = new WebSocket('ws://localhost:3001');
+let ws = new WebSocket(
+  process.env.REACT_APP_WEBSOCKET_SERVER,
+);
 const useChatSocketApi = ({ name }) => {
   const navigate = useNavigate();
   const { onAdd } = useContext(MessageContext);
