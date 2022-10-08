@@ -91,7 +91,6 @@ const useDeleteCharacterDeathApi = () => {
         method: 'DELETE',
         useToken: true,
       }).catch((error) => {
-        console.log(error);
         onAdd('error', error.message, 1200);
       }),
     [sendRequest, onAdd],

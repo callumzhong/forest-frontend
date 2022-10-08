@@ -33,7 +33,10 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    if (messages.length > 0 && isOpen) {
+    if (
+      isOpen &&
+      messages.some((message) => message.isShow === false)
+    ) {
       shownMessageHandler();
     }
   }, [messages, shownMessageHandler, isOpen]);

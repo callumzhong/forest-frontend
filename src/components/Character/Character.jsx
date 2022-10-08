@@ -18,7 +18,6 @@ const Character = ({ onLogout }) => {
   const { onGetCharacter, character } =
     useContext(AuthContext);
 
-  console.log(character);
   if (!character) {
     return (
       <>
