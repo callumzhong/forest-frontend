@@ -5,6 +5,7 @@ import GameHeader from 'components/GameHeader/GameHeader';
 import Gashapon from 'components/Gashapon/Gashapon';
 import Talk from 'components/Talk/Task';
 import { audio } from 'data/config';
+import dayjs from 'dayjs';
 import useGameAction from 'hooks/useGameAction';
 import useGameEvent from 'hooks/useGameEvent';
 import useGameMap from 'hooks/useGameMap';
@@ -18,7 +19,8 @@ import {
 } from 'react';
 import AuthContext from 'store/authContext';
 const GamePage = () => {
-  const { onUpdateCharacter } = useContext(AuthContext);
+  const { onUpdateCharacter, character } =
+    useContext(AuthContext);
   const [layer, setLayer] = useState({});
   const [map, setMap] = useState({
     name: 'home',
@@ -85,6 +87,18 @@ const GamePage = () => {
       clearInterval(intervalID);
     };
   }, [onUpdateCharacter]);
+
+  useEffect(() => {
+    const diff = dayjs().diff(
+      character.updatedAt,
+      'minute',
+    );
+    if (5 > diff) return;
+    const satiety = Math.trunc(diff / 5) * 2;
+    const mood = Math.trunc(diff / 5) * 1;
+    onUpdateCharacter(satiety, mood);
+  }, [character, onUpdateCharacter]);
+
   return (
     <>
       <Talk
