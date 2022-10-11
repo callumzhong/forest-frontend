@@ -1,7 +1,11 @@
 import { useRef } from 'react';
 
-const Chat = ({ messages, onSubmit }) => {
+const Chat = ({ ws, messages, onSubmit }) => {
   const ref = useRef();
+
+  if (ws.readyState !== 1) {
+    return <p>通訊連線中請稍後...</p>;
+  }
 
   return (
     <>

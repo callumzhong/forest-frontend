@@ -1,17 +1,8 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import MessageContext from 'store/messageContext';
-import { useNavigate } from '../../node_modules/react-router-dom/index';
-let ws = new WebSocket(
-  process.env.REACT_APP_WEBSOCKET_SERVER,
-);
+import { useCallback, useEffect, useState } from 'react';
 const useChatSocketApi = ({ name }) => {
-  const navigate = useNavigate();
-  const { onAdd } = useContext(MessageContext);
+  const [ws, setWs] = useState(
+    new WebSocket(process.env.REACT_APP_WEBSOCKET_SERVER),
+  );
   const [messages, setMessages] = useState([]);
   const submitHandler = (data) => {
     ws.send(`${name}：${data}`);
@@ -31,22 +22,11 @@ const useChatSocketApi = ({ name }) => {
     ]);
   }, []);
   const openHandler = useCallback((data) => {}, []);
-  const closeHandler = useCallback(
-    (data) => {
-      onAdd('info', '伺服器斷線返回登入畫面', 5000);
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
-    },
-    [onAdd, navigate],
-  );
+  const closeHandler = useCallback((data) => {
+    setWs(process.env.REACT_APP_WEBSOCKET_SERVER);
+  }, []);
 
   useEffect(() => {
-    if (ws.readyState === 3) {
-      ws = new WebSocket(
-        process.env.REACT_APP_WEBSOCKET_SERVER,
-      );
-    }
     ws.onopen = openHandler;
     ws.onclose = closeHandler;
     ws.onmessage = messageHandler;
@@ -55,8 +35,9 @@ const useChatSocketApi = ({ name }) => {
       ws.removeEventListener('close', closeHandler);
       ws.removeEventListener('message', messageHandler);
     };
-  }, [closeHandler, messageHandler, openHandler]);
+  }, [ws, closeHandler, messageHandler, openHandler]);
   return {
+    ws,
     messages,
     submitHandler,
     shownMessageHandler,
