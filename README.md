@@ -142,9 +142,22 @@ npm install --global yarn
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### 釣魚  
+![image](https://i.imgur.com/tiIjUqI.gif)  
+操作:  
+使用 WSAD or 方向鍵移動到河邊點擊 "動作" 即可
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+### 採石
+![image](https://i.imgur.com/bLF8uIw.gif)  
+操作:  
+使用 WSAD or 方向鍵移動到石頭旁點擊 "動作" 即可
+
+### 伐木
+![image](https://i.imgur.com/pV007CD.gif)    
+操作:  
+使用 WSAD or 方向鍵移動到樹木旁點擊 "動作" 即可
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
