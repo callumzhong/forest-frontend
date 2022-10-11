@@ -10,7 +10,7 @@ import Chat from './Chat';
 
 const ChatRoom = () => {
   const { character } = useContext(AuthContext);
-  const { submitHandler, shownMessageHandler, messages } =
+  const { submitHandler, shownMessageHandler, messages,ws} =
     useChatSocketApi({
       name: character.name,
     });
@@ -79,6 +79,7 @@ const ChatRoom = () => {
       >
         <Card>
           <Chat
+          ws={ws}
             onSubmit={submitHandler}
             messages={messages}
           />
