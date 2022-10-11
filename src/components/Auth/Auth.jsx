@@ -1,26 +1,18 @@
 import { useContext, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
 import AuthContext from 'store/authContext';
+
 const Auth = ({ children }) => {
-  const { isAuth, onGetCharacter } =
+  const { character, onLogin, onGetCharacter } =
     useContext(AuthContext);
-  const location = useLocation();
 
   useEffect(() => {
+    onLogin();
     onGetCharacter();
-  }, [onGetCharacter]);
+  }, [onGetCharacter, onLogin]);
 
-  if (!isAuth) {
-    return (
-      <Navigate
-        to='/login'
-        state={{ from: location }}
-        replace
-      />
-    );
+  if (character) {
+    return children;
   }
-
-  return children;
 };
 
 export default Auth;

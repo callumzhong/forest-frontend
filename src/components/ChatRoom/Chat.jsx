@@ -3,7 +3,7 @@ import { useRef } from 'react';
 const Chat = ({ ws, messages, onSubmit }) => {
   const ref = useRef();
 
-  if (ws.readyState !== 1) {
+  if (ws.readyState !== WebSocket.OPEN) {
     return <p>通訊連線中請稍後...</p>;
   }
 
@@ -31,7 +31,7 @@ const Chat = ({ ws, messages, onSubmit }) => {
       >
         <input
           required
-          placeholder='按下 Enter 發送'
+          placeholder={'按下 Enter 發送'}
           ref={ref}
           className='w-full px-2 text-lg text-black'
           type='text'

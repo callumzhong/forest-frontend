@@ -43,6 +43,7 @@ function App() {
       <SceneTransition isShow={isSceneTransition} />
       <Routes>
         <Route
+          index
           path='/'
           element={
             <Auth>
