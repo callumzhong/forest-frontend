@@ -22,8 +22,6 @@ const AuthContext = React.createContext({
 
 export const AuthContextProvider = (props) => {
   const [isAuth, setIsAuth] = useState(false);
-  // const navigate = useNavigate();
-  // const { authTokenApi } = useAuthTokenApi();
   const { updateCharacterAttributesApi } =
     useUpdateCharacterAttributesApi();
   const { deleteCharacterDeathApi } =
