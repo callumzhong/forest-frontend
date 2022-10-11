@@ -23,7 +23,9 @@ const useChatSocketApi = ({ name }) => {
   }, []);
   const openHandler = useCallback((data) => {}, []);
   const closeHandler = useCallback((data) => {
-    setWs(process.env.REACT_APP_WEBSOCKET_SERVER);
+    setWs(
+      new WebSocket(process.env.REACT_APP_WEBSOCKET_SERVER),
+    );
   }, []);
 
   useEffect(() => {
