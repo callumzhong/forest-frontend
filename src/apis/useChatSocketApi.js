@@ -43,7 +43,9 @@ const useChatSocketApi = ({ name }) => {
 
   useEffect(() => {
     if (ws.readyState === 3) {
-      ws = new WebSocket('ws://localhost:3001');
+      ws = new WebSocket(
+        process.env.REACT_APP_WEBSOCKET_SERVER,
+      );
     }
     ws.onopen = openHandler;
     ws.onclose = closeHandler;
