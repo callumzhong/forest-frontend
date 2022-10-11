@@ -157,6 +157,11 @@ npm install --global yarn
 操作:  
 使用 WSAD or 方向鍵移動到樹木旁點擊 "動作" 即可
 
+### 扭蛋
+![image](https://i.imgur.com/5VDxFlt.gif)    
+操作:  
+前往小屋內與 NPC 對話，啟動轉蛋機
+需消耗魚肉、石頭、木頭各 50 才可以領取轉蛋
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
