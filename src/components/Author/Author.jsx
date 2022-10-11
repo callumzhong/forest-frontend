@@ -26,13 +26,22 @@ const Author = () => {
             作者的話
           </h2>
           <p className='mb-4'>
-            本專案核心要素是藉由遊戲化的方式，透過釣魚、伐木、採石等行為表示角色為了生活而努力，獲取到的資源透過扭蛋表達以物易物，得到伙食、娛樂票券、奢侈物品等等。
+            遊戲以釣魚、伐木、採石等，採集資源的方式培養生活習慣。
           </p>
+          <ul className='mb-4 list-inside list-disc'>
+            <li>
+              每 5 分鐘會扣飽食度、情緒值，角色有死亡機制
+            </li>
+            <li>全體聊天室讓你不孤單暢聊一整晚</li>
+            <li>角色動作皆有音效提升精神</li>
+            <li>配有外出劵、奢侈劵獎勵機制</li>
+          </ul>
           <p className='mb-4'>影片介紹：</p>
           <iframe
-            className='mx-auto aspect-video'
+            className='m-auto'
+            width='560'
             height='315'
-            src='https://www.youtube.com/embed/2UAAu6QQqP4'
+            src='https://www.youtube.com/embed/tJFEV0H91dw'
             title='YouTube video player'
             frameborder='0'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
