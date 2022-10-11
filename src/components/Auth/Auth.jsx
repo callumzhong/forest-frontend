@@ -1,31 +1,26 @@
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import AuthContext from 'store/authContext';
 const Auth = ({ children }) => {
-  const { isAuth, onLogin, character, onGetCharacter } =
+  const { isAuth, onGetCharacter } =
     useContext(AuthContext);
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  //TODO: 待更版驗證為自動延長 token
   useEffect(() => {
-    if (isAuth) return;
-    const fetchData = async () => {
-      await onLogin();
-      await onGetCharacter();
-    };
+    onGetCharacter();
+  }, [onGetCharacter]);
 
-    fetchData().catch((err) => {
-      navigate('/login');
-    });
-  }, [
-    navigate,
-    isAuth,
-    onLogin,
-    onGetCharacter,
-    character,
-  ]);
+  if (!isAuth) {
+    return (
+      <Navigate
+        to='/login'
+        state={{ from: location }}
+        replace
+      />
+    );
+  }
 
-  return character && isAuth && children;
+  return children;
 };
 
 export default Auth;

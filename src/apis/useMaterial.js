@@ -9,7 +9,7 @@ const useGetMaterialApi = () => {
         url: `${process.env.REACT_APP_API_SERVER}/api/inventory?type=material`,
         method: 'GET',
         useToken: true,
-      }).catch(() => {}),
+      }),
     [sendRequest],
   );
   return { data, getMaterialApi };
@@ -40,7 +40,7 @@ const useCollectMaterialApi = () => {
           type: type,
         }),
         useToken: true,
-      }).catch(() => {});
+      });
     },
     [sendRequest],
   );

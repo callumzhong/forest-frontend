@@ -4,6 +4,7 @@ import SceneTransition from 'components/SceneTransition/SceneTransition';
 import emitter, { eventName } from 'emitter';
 import useSceneTransition from 'hooks/useSceneTransition';
 import useWindowSize from 'hooks/useWindowSize';
+import ErrorPage from 'pages/ErrorPage';
 import GamePage from 'pages/GamePage';
 import LoginPage from 'pages/LoginPage';
 import { useEffect } from 'react';
@@ -50,6 +51,7 @@ function App() {
           }
         />
         <Route path='/login' element={<LoginPage />} />
+        <Route path='*' element={<ErrorPage />} />
       </Routes>
     </>
   );

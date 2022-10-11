@@ -1,4 +1,3 @@
-import useAuthTokenApi from 'apis/useAuthTokenApi';
 import {
   useDeleteCharacterDeathApi,
   useGetCharacterApi,
@@ -23,7 +22,8 @@ const AuthContext = React.createContext({
 
 export const AuthContextProvider = (props) => {
   const [isAuth, setIsAuth] = useState(false);
-  const { authTokenApi } = useAuthTokenApi();
+  // const navigate = useNavigate();
+  // const { authTokenApi } = useAuthTokenApi();
   const { updateCharacterAttributesApi } =
     useUpdateCharacterAttributesApi();
   const { deleteCharacterDeathApi } =
@@ -50,17 +50,13 @@ export const AuthContextProvider = (props) => {
     ],
   );
 
-  const loginHandler = useCallback(
-    (_token) => {
-      if (_token) {
-        localStorage.setItem('authorization', _token);
-      }
-      return authTokenApi().then(() => {
-        setIsAuth(true);
-      });
-    },
-    [authTokenApi],
-  );
+  const loginHandler = useCallback((_token) => {
+    if (_token) {
+      localStorage.setItem('authorization', _token);
+    }
+    const token = localStorage.getItem('authorization');
+    if (token) setIsAuth(true);
+  }, []);
 
   const logoutHandler = useCallback(() => {
     localStorage.removeItem('authorization');
