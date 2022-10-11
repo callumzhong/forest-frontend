@@ -1,8 +1,10 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
+import { useNavigate } from '../../node_modules/react-router-dom/index';
 
 const initialState = {
   loading: false,
   error: null,
+  code: null,
   data: null,
   extra: null,
   identifier: null,
@@ -26,7 +28,11 @@ const httpReducer = (curHttpState, action) => {
         extra: action.extra,
       };
     case 'ERROR':
-      return { loading: false, error: action.errorMessage };
+      return {
+        loading: false,
+        code: action.errorCode,
+        error: action.errorMessage,
+      };
     case 'CLEAR':
       return initialState;
     default:
@@ -38,6 +44,7 @@ const getToken = (format) =>
   `${format} ${localStorage.getItem('authorization')}`;
 
 const useHttp = () => {
+  const navigate = useNavigate();
   const [httpState, dispatchHttp] = useReducer(
     httpReducer,
     initialState,
@@ -49,7 +56,7 @@ const useHttp = () => {
   );
 
   const sendRequest = useCallback(
-    ({
+    async ({
       url,
       method,
       useToken = false,
@@ -69,43 +76,47 @@ const useHttp = () => {
         type: 'SEND',
         identifier: reqIdentifier,
       });
-      return fetch(url, {
-        method: method,
-        body: body,
-        headers,
-      })
-        .then(async (response) => {
-          const isJson = response.headers
-            .get('Content-Type')
-            .includes('json');
-          const data = isJson
-            ? await response.json()
-            : await response.text();
-          if (!response.ok) {
-            const error = new Error(data?.message ?? data);
-            error.code = response.status;
-            throw error;
-          }
-          return data;
-        })
-        .then((responseData) => {
-          dispatchHttp({
-            type: 'RESPONSE',
-            responseData: responseData,
-            extra: reqExtra,
-          });
-          return responseData;
-        })
-        .catch((error) => {
-          dispatchHttp({
-            type: 'ERROR',
-            errorMessage: error.message,
-          });
-          throw error;
+
+      try {
+        const response = await fetch(url, {
+          method: method,
+          body: body,
+          headers,
         });
+        const isJson = response.headers
+          .get('Content-Type')
+          .includes('json');
+        const data = isJson
+          ? await response.json()
+          : await response.text();
+        if (!response.ok) {
+          const error = new Error(data?.message ?? data);
+          error.code = response.status;
+          throw error;
+        }
+        const responseData = await data;
+        dispatchHttp({
+          type: 'RESPONSE',
+          responseData: responseData,
+          extra: reqExtra,
+        });
+        return responseData;
+      } catch (error) {
+        dispatchHttp({
+          type: 'ERROR',
+          errorCode: error.code,
+          errorMessage: error.message,
+        });
+      }
     },
     [],
   );
+  const { error, code } = httpState;
+  useEffect(() => {
+    if (error && code === 401) {
+      navigate('/login');
+    }
+  }, [error, code, navigate]);
 
   return {
     isLoading: httpState.loading,

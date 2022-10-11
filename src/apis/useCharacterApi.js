@@ -1,5 +1,5 @@
 import useHttp from 'hooks/useHttp';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import MessageContext from 'store/messageContext';
 import * as yup from 'yup';
 
@@ -37,18 +37,21 @@ const useCreateCharacterApi = () => {
   const { onAdd } = useContext(MessageContext);
 
   const createCharacterApi = useCallback(
-    (body) => {
+    (body) =>
       sendRequest({
         url: `${process.env.REACT_APP_API_SERVER}/api/character`,
         method: 'POST',
         body: JSON.stringify(body),
         useToken: true,
-      }).catch((error) => {
-        onAdd('error', error.message, 1200);
-      });
-    },
-    [sendRequest, onAdd],
+      }),
+    [sendRequest],
   );
+
+  useEffect(() => {
+    if (error && error.code !== 401) {
+      onAdd('error', error.message, 1200);
+    }
+  }, [error, onAdd]);
 
   return {
     isLoading,
@@ -59,7 +62,7 @@ const useCreateCharacterApi = () => {
 };
 
 const useUpdateCharacterAttributesApi = () => {
-  const { sendRequest } = useHttp();
+  const { sendRequest, error } = useHttp();
   const { onAdd } = useContext(MessageContext);
 
   const updateCharacterAttributesApi = useCallback(
@@ -69,11 +72,15 @@ const useUpdateCharacterAttributesApi = () => {
         method: 'PATCH',
         body: JSON.stringify(body),
         useToken: true,
-      }).catch((error) => {
-        onAdd('error', error.message, 1200);
       }),
-    [sendRequest, onAdd],
+    [sendRequest],
   );
+
+  useEffect(() => {
+    if (error && error.code !== 401) {
+      onAdd('error', error.message, 1200);
+    }
+  }, [error, onAdd]);
 
   return {
     updateCharacterAttributesApi,
@@ -81,7 +88,7 @@ const useUpdateCharacterAttributesApi = () => {
 };
 
 const useDeleteCharacterDeathApi = () => {
-  const { sendRequest } = useHttp();
+  const { sendRequest, error } = useHttp();
   const { onAdd } = useContext(MessageContext);
 
   const deleteCharacterDeathApi = useCallback(
@@ -90,11 +97,15 @@ const useDeleteCharacterDeathApi = () => {
         url: `${process.env.REACT_APP_API_SERVER}/api/character/death/${id}`,
         method: 'DELETE',
         useToken: true,
-      }).catch((error) => {
-        onAdd('error', error.message, 1200);
       }),
-    [sendRequest, onAdd],
+    [sendRequest],
   );
+
+  useEffect(() => {
+    if (error && error.code !== 401) {
+      onAdd('error', error.message, 1200);
+    }
+  }, [error, onAdd]);
 
   return {
     deleteCharacterDeathApi,

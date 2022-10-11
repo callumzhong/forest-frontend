@@ -1,5 +1,5 @@
 import useHttp from 'hooks/useHttp';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import AuthContext from 'store/authContext';
 import MessageContext from 'store/messageContext';
 import * as yup from 'yup';
@@ -36,16 +36,22 @@ const useRegisterApi = () => {
         url: `${process.env.REACT_APP_API_SERVER}/api/user/sign_up`,
         method: 'POST',
         body: JSON.stringify(body),
-      })
-        .then((data) => {
-          onAdd('success', '註冊成功', 1200);
-          onLogin(data.token);
-        })
-        .catch((error) => {
-          onAdd('error', error.message, 1200);
-        }),
-    [sendRequest, onLogin, onAdd],
+      }),
+    [sendRequest],
   );
+
+  useEffect(() => {
+    if (data) {
+      onAdd('success', '註冊成功', 1200);
+      onLogin(data.token);
+    }
+  }, [data, onAdd, onLogin]);
+
+  useEffect(() => {
+    if (error) {
+      onAdd('error', error.message, 1200);
+    }
+  }, [error, onAdd]);
 
   return {
     data,

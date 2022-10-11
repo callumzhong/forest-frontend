@@ -41,8 +41,8 @@ const LoginPage = () => {
   }, []);
 
   useEffect(() => {
-    if (isAuth === true) {
-      onGetCharacter().catch(() => {});
+    if (isAuth) {
+      onGetCharacter();
     }
   }, [isAuth, onGetCharacter]);
 

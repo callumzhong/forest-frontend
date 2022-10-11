@@ -1,5 +1,5 @@
 import useHttp from 'hooks/useHttp';
-import { useCallback, useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AuthContext from 'store/authContext';
 import MessageContext from 'store/messageContext';
 import * as yup from 'yup';
@@ -18,33 +18,31 @@ const schema = yup
   })
   .required();
 const useLoginApi = () => {
-  const { isLoading, error, sendRequest } = useHttp();
+  const { isLoading, error, data, sendRequest } = useHttp();
   const { onAdd } = useContext(MessageContext);
   const { onLogin } = useContext(AuthContext);
-  const loginApi = useCallback(
-    (body) => {
-      sendRequest({
-        url: `${process.env.REACT_APP_API_SERVER}/api/user/sign_in`,
-        method: 'POST',
-        body: JSON.stringify(body),
-      })
-        .then(async (data) => {
-          onLogin(data.token);
-        })
-        .catch((error) => {
-          if (!error.code) {
-            onAdd(
-              'error',
-              '伺服器正在喚醒，請稍後再試',
-              1200,
-            );
-            return;
-          }
-          onAdd('error', error.message, 1200);
-        });
-    },
-    [sendRequest, onAdd, onLogin],
-  );
+  const loginApi = (body) =>
+    sendRequest({
+      url: `${process.env.REACT_APP_API_SERVER}/api/user/sign_in`,
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+
+  useEffect(() => {
+    if (data) {
+      onLogin(data.token);
+    }
+  }, [data, onLogin]);
+
+  useEffect(() => {
+    if (!error) return;
+    if (!error.code) {
+      onAdd('error', '伺服器正在喚醒，請稍後再試', 1200);
+      return;
+    }
+    onAdd('error', error.message, 1200);
+  }, [error, onAdd]);
+
   return {
     isLoading,
     error,
