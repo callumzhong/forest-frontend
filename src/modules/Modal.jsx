@@ -23,6 +23,7 @@ const Modal = ({
   return (
     <ReactModal
       shouldFocusAfterRender={true}
+      shouldReturnFocusAfterClose={false}
       isOpen={isOpen}
       onAfterOpen={onAfterOpen}
       onAfterClose={onAfterClose}
