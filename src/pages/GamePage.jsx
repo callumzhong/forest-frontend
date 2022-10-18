@@ -74,7 +74,6 @@ const GamePage = () => {
     window.addEventListener('keydown', listener);
     return () => {
       window.removeEventListener('keydown', listener);
-      audio.map.stop();
     };
   }, []);
 

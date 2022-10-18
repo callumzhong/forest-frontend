@@ -1,6 +1,5 @@
 import CHOP_EFFECT_AUDIO from 'assets/audio/chop_effect.wav';
 import FISH_EFFECT_AUDIO from 'assets/audio/fish_effect.mp3';
-import EXPANSION_AUDIO from 'assets/audio/game-soundtrack.wav';
 import GASHAPON_EFFECT_AUDIO from 'assets/audio/gatyagatya.mp3';
 import MAP_AUDIO from 'assets/audio/map.wav';
 import MINING_EFFECT_AUDIO from 'assets/audio/mining_effect.wav';
@@ -423,12 +422,6 @@ const gameObjects = {
 };
 
 const audio = {
-  home: new Howl({
-    src: EXPANSION_AUDIO,
-    loop: true,
-    html5: true,
-    volume: 0.8,
-  }),
   map: new Howl({
     src: MAP_AUDIO,
     loop: true,

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer } from 'react';
-import { useNavigate } from '../../node_modules/react-router-dom/index';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   loading: false,
@@ -121,6 +121,7 @@ const useHttp = () => {
   return {
     isLoading: httpState.loading,
     data: httpState.data,
+    code: httpState.code,
     error: httpState.error,
     sendRequest,
     reqExtra: httpState.extra,

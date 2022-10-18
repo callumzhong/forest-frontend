@@ -6,9 +6,6 @@ import AuthContext from 'store/authContext';
 
 const Setting = ({ isOpen, onOpen, onClose }) => {
   const { onLogout } = useContext(AuthContext);
-  const logoutHandler = async () => {
-    onLogout();
-  };
   return (
     <>
       <button
@@ -26,7 +23,7 @@ const Setting = ({ isOpen, onOpen, onClose }) => {
           <h2 className='mb-6 text-center text-xl'>設定</h2>
           <ul className='text-center text-lg'>
             <li>
-              <Button onClick={logoutHandler}>登出</Button>
+              <Button onClick={onLogout}>登出</Button>
             </li>
           </ul>
         </Card>

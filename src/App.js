@@ -1,5 +1,5 @@
 import Alert from 'components/Alert/Alert';
-import Auth from 'components/Auth/Auth';
+import RequireCharacter from 'components/RequireCharacter/RequireCharacter';
 import SceneTransition from 'components/SceneTransition/SceneTransition';
 import emitter, { eventName } from 'emitter';
 import useSceneTransition from 'hooks/useSceneTransition';
@@ -7,13 +7,16 @@ import useWindowSize from 'hooks/useWindowSize';
 import ErrorPage from 'pages/ErrorPage';
 import GamePage from 'pages/GamePage';
 import LoginPage from 'pages/LoginPage';
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import AuthContext from 'store/authContext';
 
 function App() {
   const { isSceneTransition, sceneTransitionHandler } =
     useSceneTransition(true);
   const windowSize = useWindowSize();
+  const [isLoading, setIsLoading] = useState(true);
+  const { onGetCharacter } = useContext(AuthContext);
 
   useEffect(() => {
     emitter.on(
@@ -27,6 +30,15 @@ function App() {
       );
     };
   }, [sceneTransitionHandler]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await onGetCharacter();
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [onGetCharacter]);
+
   if (windowSize === 'mobile') {
     return (
       <div className='flex h-screen w-full flex-col items-center justify-center bg-black p-4 text-xl text-white'>
@@ -37,18 +49,18 @@ function App() {
       </div>
     );
   }
+
   return (
     <>
       <Alert />
       <SceneTransition isShow={isSceneTransition} />
       <Routes>
         <Route
-          index
           path='/'
           element={
-            <Auth>
+            <RequireCharacter isLoading={isLoading}>
               <GamePage />
-            </Auth>
+            </RequireCharacter>
           }
         />
         <Route path='/login' element={<LoginPage />} />

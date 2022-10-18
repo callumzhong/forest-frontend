@@ -54,7 +54,7 @@ const usePostPropApi = () => {
 
   useEffect(() => {
     if (error) {
-      onAdd('error', error.message, 1200);
+      onAdd('error', error, 1200);
     }
   }, [error, onAdd]);
 

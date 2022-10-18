@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from 'store/authContext';
 import sleep from 'utils/sleep.js';
 import CharacterForm from './CharacterForm';
-const Character = ({ onLogout }) => {
+const Character = ({ onDisableAuthenticate }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.form?.pathname || '/';
@@ -23,7 +23,7 @@ const Character = ({ onLogout }) => {
       <>
         <h2 className='mb-4 text-center'>建立角色</h2>
         <CharacterForm
-          onLogout={onLogout}
+          onLogout={onDisableAuthenticate}
           onGetCharacter={onGetCharacter}
         />
       </>
@@ -42,7 +42,9 @@ const Character = ({ onLogout }) => {
         />
         <div className='my-6 flex justify-end gap-4'>
           <Button onClick={startHandler}>進入遊戲</Button>
-          <Button onClick={onLogout}>登出</Button>
+          <Button onClick={onDisableAuthenticate}>
+            登出
+          </Button>
         </div>
       </>
     )

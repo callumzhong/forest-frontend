@@ -5,6 +5,7 @@ import Message from 'components/Login/Message';
 import Register from 'components/Register/Register';
 import { audio } from 'data/config';
 import emitter, { eventName } from 'emitter';
+import useAuthorization from 'hooks/useAuthorization';
 import Card from 'modules/Card';
 import Hero from 'modules/Hero';
 import { useContext, useEffect } from 'react';
@@ -12,31 +13,38 @@ import AuthContext from 'store/authContext';
 import sleep from 'utils/sleep';
 
 const LoginPage = () => {
-  const { onLogout, isAuth, onGetCharacter } =
-    useContext(AuthContext);
+  const { onGetCharacter } = useContext(AuthContext);
+  const {
+    isAuth,
+    disableAuthenticateHandler,
+    enableAuthenticateHandler,
+  } = useAuthorization();
 
   useEffect(() => {
-    const fetchData = async () => {
-      await sleep(1000);
+    const fn = async () => {
+      await sleep(500);
       emitter.emit(eventName.sceneTransition, false);
     };
-    fetchData();
+    window.addEventListener('load', fn);
+
+    return () => {
+      window.removeEventListener('load', fn);
+    };
   }, []);
 
   useEffect(() => {
-    onLogout();
-  }, [onLogout]);
+    disableAuthenticateHandler();
+  }, [disableAuthenticateHandler]);
 
   useEffect(() => {
     const listener = () => {
-      if (!audio.home.playing()) {
-        audio.home.play();
+      if (!audio.map.playing()) {
+        audio.map.play();
       }
     };
     window.addEventListener('click', listener);
     return () => {
       window.removeEventListener('click', listener);
-      audio.home.stop();
     };
   }, []);
 
@@ -54,12 +62,28 @@ const LoginPage = () => {
         </h1>
         <Card gap={16}>
           <div className='flex-[0.8]'>
-            {!isAuth && <Login />}
-            {isAuth && <Character onLogout={onLogout} />}
+            {!isAuth && (
+              <Login
+                onEnableAuthenticate={
+                  enableAuthenticateHandler
+                }
+              />
+            )}
+            {isAuth && (
+              <Character
+                onDisableAuthenticate={
+                  disableAuthenticateHandler
+                }
+              />
+            )}
             <Message />
           </div>
           <div className='flex flex-[0.2] flex-col gap-4'>
-            <Register />
+            <Register
+              onEnableAuthenticate={
+                enableAuthenticateHandler
+              }
+            />
             <Author />
           </div>
         </Card>
