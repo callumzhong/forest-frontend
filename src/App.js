@@ -7,16 +7,13 @@ import useWindowSize from 'hooks/useWindowSize';
 import ErrorPage from 'pages/ErrorPage';
 import GamePage from 'pages/GamePage';
 import LoginPage from 'pages/LoginPage';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AuthContext from 'store/authContext';
 
 function App() {
   const { isSceneTransition, sceneTransitionHandler } =
     useSceneTransition(true);
   const windowSize = useWindowSize();
-  const [isLoading, setIsLoading] = useState(true);
-  const { onGetCharacter } = useContext(AuthContext);
 
   useEffect(() => {
     emitter.on(
@@ -30,14 +27,6 @@ function App() {
       );
     };
   }, [sceneTransitionHandler]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await onGetCharacter();
-      setIsLoading(false);
-    };
-    fetchData();
-  }, [onGetCharacter]);
 
   if (windowSize === 'mobile') {
     return (
@@ -58,7 +47,7 @@ function App() {
         <Route
           path='/'
           element={
-            <RequireCharacter isLoading={isLoading}>
+            <RequireCharacter>
               <GamePage />
             </RequireCharacter>
           }
