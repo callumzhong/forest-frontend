@@ -1,16 +1,17 @@
 import {
   useDeleteCharacterDeathApi,
   useGetCharacterApi,
-  useUpdateCharacterAttributesApi
+  useUpdateCharacterAttributesApi,
 } from 'apis/useCharacterApi';
 import React, {
   useCallback,
   useContext,
-  useEffect
+  useEffect,
 } from 'react';
 import MessageContext from './messageContext';
 
 const AuthContext = React.createContext({
+  isLoading: false,
   character: {},
   onLogout: () => {},
   onGetCharacter: async () => {},
@@ -23,6 +24,7 @@ export const AuthContextProvider = (props) => {
   const { deleteCharacterDeathApi } =
     useDeleteCharacterDeathApi();
   const {
+    isLoading,
     getCharacterApi,
     data: character,
     clear,
@@ -64,6 +66,7 @@ export const AuthContextProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
+        isLoading: isLoading,
         character: character,
         onLogout: clear,
         onGetCharacter: getCharacterApi,
