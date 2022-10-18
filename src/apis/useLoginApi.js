@@ -1,6 +1,5 @@
 import useHttp from 'hooks/useHttp';
 import { useContext, useEffect } from 'react';
-import AuthContext from 'store/authContext';
 import MessageContext from 'store/messageContext';
 import * as yup from 'yup';
 
@@ -17,10 +16,11 @@ const schema = yup
       .required('必填'),
   })
   .required();
-const useLoginApi = () => {
-  const { isLoading, error, data, sendRequest } = useHttp();
+
+const useLoginApi = ({ onEnableAuthenticate }) => {
+  const { isLoading, error, code, data, sendRequest } =
+    useHttp();
   const { onAdd } = useContext(MessageContext);
-  const { onLogin } = useContext(AuthContext);
   const loginApi = (body) =>
     sendRequest({
       url: `${process.env.REACT_APP_API_SERVER}/api/user/sign_in`,
@@ -30,22 +30,23 @@ const useLoginApi = () => {
 
   useEffect(() => {
     if (data) {
-      onLogin(data.token);
+      onEnableAuthenticate(data.token);
     }
-  }, [data, onLogin]);
+  }, [data, onEnableAuthenticate]);
 
   useEffect(() => {
     if (!error) return;
-    if (!error.code) {
+    if (!code) {
       onAdd('error', '伺服器正在喚醒，請稍後再試', 1200);
       return;
     }
-    onAdd('error', error.message, 1200);
-  }, [error, onAdd]);
+    onAdd('error', error, 1200);
+  }, [error, code, onAdd]);
 
   return {
     isLoading,
     error,
+    data,
     loginApi,
   };
 };

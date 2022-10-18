@@ -1,6 +1,5 @@
 import useHttp from 'hooks/useHttp';
 import { useCallback, useContext, useEffect } from 'react';
-import AuthContext from 'store/authContext';
 import MessageContext from 'store/messageContext';
 import * as yup from 'yup';
 
@@ -26,9 +25,11 @@ const schema = yup
   })
   .required();
 
-const useRegisterApi = () => {
+const useRegisterApi = ({
+  onEnableAuthenticate,
+  onClose,
+}) => {
   const { onAdd } = useContext(MessageContext);
-  const { onLogin } = useContext(AuthContext);
   const { isLoading, data, error, sendRequest } = useHttp();
   const registerApi = useCallback(
     (body) =>
@@ -43,13 +44,14 @@ const useRegisterApi = () => {
   useEffect(() => {
     if (data) {
       onAdd('success', '註冊成功', 1200);
-      onLogin(data.token);
+      onEnableAuthenticate(data.token);
+      onClose();
     }
-  }, [data, onAdd, onLogin]);
+  }, [data, onAdd, onEnableAuthenticate, onClose]);
 
   useEffect(() => {
     if (error) {
-      onAdd('error', error.message, 1200);
+      onAdd('error', error, 1200);
     }
   }, [error, onAdd]);
 

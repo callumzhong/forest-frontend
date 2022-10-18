@@ -48,8 +48,8 @@ const useCreateCharacterApi = () => {
   );
 
   useEffect(() => {
-    if (error && error.code !== 401) {
-      onAdd('error', error.message, 1200);
+    if (error) {
+      onAdd('error', error, 1200);
     }
   }, [error, onAdd]);
 
@@ -77,8 +77,8 @@ const useUpdateCharacterAttributesApi = () => {
   );
 
   useEffect(() => {
-    if (error && error.code !== 401) {
-      onAdd('error', error.message, 1200);
+    if (error) {
+      onAdd('error', error, 1200);
     }
   }, [error, onAdd]);
 
@@ -102,8 +102,8 @@ const useDeleteCharacterDeathApi = () => {
   );
 
   useEffect(() => {
-    if (error && error.code !== 401) {
-      onAdd('error', error.message, 1200);
+    if (error) {
+      onAdd('error', error, 1200);
     }
   }, [error, onAdd]);
 

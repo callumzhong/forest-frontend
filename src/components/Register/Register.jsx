@@ -7,14 +7,14 @@ import Card from 'modules/Card';
 import Modal from 'modules/Modal';
 import RegisterForm from './RegisterForm';
 
-const Register = () => {
+const Register = ({ onEnableAuthenticate }) => {
   const { onOpen, onClose, isOpen } = useModal();
-  const { registerApi, isLoading } = useRegisterApi();
-  const submitHandler = (data) => {
-    registerApi(data).then(() => {
-      onClose();
-    });
-  };
+  const { registerApi, isLoading } = useRegisterApi({
+    onEnableAuthenticate,
+    onClose,
+  });
+  const submitHandler = (data) => registerApi(data);
+
   return (
     <>
       <Button
