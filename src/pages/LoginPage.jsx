@@ -21,15 +21,11 @@ const LoginPage = () => {
   } = useAuthorization();
 
   useEffect(() => {
-    const fn = async () => {
-      await sleep(500);
+    const fetchData = async () => {
+      await sleep(1500);
       emitter.emit(eventName.sceneTransition, false);
     };
-    window.addEventListener('load', fn);
-
-    return () => {
-      window.removeEventListener('load', fn);
-    };
+    fetchData();
   }, []);
 
   useEffect(() => {
