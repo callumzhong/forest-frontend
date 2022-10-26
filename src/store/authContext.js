@@ -1,14 +1,12 @@
 import {
-  useDeleteCharacterDeathApi,
   useGetCharacterApi,
   useUpdateCharacterAttributesApi,
 } from 'apis/useCharacterApi';
 import React, {
   useCallback,
-  useContext,
   useEffect,
+  useState,
 } from 'react';
-import MessageContext from './messageContext';
 
 const AuthContext = React.createContext({
   isLoading: false,
@@ -19,17 +17,15 @@ const AuthContext = React.createContext({
 });
 
 export const AuthContextProvider = (props) => {
+  const [character, setCharacter] = useState();
   const { updateCharacterAttributesApi } =
     useUpdateCharacterAttributesApi();
-  const { deleteCharacterDeathApi } =
-    useDeleteCharacterDeathApi();
   const {
     isLoading,
     getCharacterApi,
-    data: character,
+    data: characterData,
     clear,
   } = useGetCharacterApi();
-  const { onAdd } = useContext(MessageContext);
 
   const updateCharacterAttributesHandler = useCallback(
     async (satiety = 2, mood = 1) => {
@@ -49,19 +45,8 @@ export const AuthContextProvider = (props) => {
   );
 
   useEffect(() => {
-    if (!character) return;
-    if (character.attributes.satiety > 0) return;
-    // Character death
-    deleteCharacterDeathApi(character._id).then(() => {
-      onAdd('info', '角色飢餓過久已死亡復活');
-      getCharacterApi();
-    });
-  }, [
-    onAdd,
-    character,
-    deleteCharacterDeathApi,
-    getCharacterApi,
-  ]);
+    if (characterData) setCharacter(characterData);
+  }, [characterData]);
 
   return (
     <AuthContext.Provider

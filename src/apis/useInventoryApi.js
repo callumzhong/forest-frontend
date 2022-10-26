@@ -31,7 +31,7 @@ const useGetGashaponApi = () => {
 };
 
 const usePostPropApi = () => {
-  const { sendRequest, data, error } = useHttp();
+  const { sendRequest, data, error,code } = useHttp();
   const { onAdd } = useContext(MessageContext);
   const postPropApi = useCallback(
     (id) =>
@@ -53,10 +53,10 @@ const usePostPropApi = () => {
   }, [data, onAdd]);
 
   useEffect(() => {
-    if (error) {
+    if (error && code !== 401) {
       onAdd('error', error, 1200);
     }
-  }, [error, onAdd]);
+  }, [error, onAdd,code]);
 
   return { postPropApi };
 };

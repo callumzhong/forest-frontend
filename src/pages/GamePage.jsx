@@ -1,3 +1,4 @@
+import { useDeleteCharacterDeathApi } from 'apis/useCharacterApi';
 import { useGetInventoryApi } from 'apis/useInventoryApi';
 import Game from 'components/Game/Game';
 import GameFooter from 'components/GameFooter/GameFooter';
@@ -18,8 +19,11 @@ import {
   useState,
 } from 'react';
 import AuthContext from 'store/authContext';
+
 const GamePage = () => {
-  const { onUpdateCharacter, character } =
+  const { deleteCharacterDeathApi } =
+    useDeleteCharacterDeathApi();
+  const { onUpdateCharacter, character, onGetCharacter } =
     useContext(AuthContext);
   const [layer, setLayer] = useState({});
   const [map, setMap] = useState({
@@ -97,6 +101,16 @@ const GamePage = () => {
     const mood = Math.trunc(diff / 5) * 1;
     onUpdateCharacter(satiety, mood);
   }, [character, onUpdateCharacter]);
+
+  useEffect(() => {
+    (async () => {
+      if (!character) return;
+      if (character.attributes.satiety > 0) return;
+      console.log(1);
+      await deleteCharacterDeathApi(character._id);
+      await onGetCharacter();
+    })();
+  }, [character, onGetCharacter, deleteCharacterDeathApi]);
 
   return (
     <>

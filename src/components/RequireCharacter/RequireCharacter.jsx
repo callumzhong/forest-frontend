@@ -9,15 +9,12 @@ const RequireCharacter = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchData = async () => {
-      await onGetCharacter();
+    (async () => {
+      if (!character) {
+        await onGetCharacter();
+      }
       setIsLoading(false);
-    };
-    if (!character) {
-      fetchData();
-      return;
-    }
-    setIsLoading(false);
+    })();
   }, [character, onGetCharacter]);
 
   if (!isLoading && !character) {
