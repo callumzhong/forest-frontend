@@ -112,6 +112,7 @@ const useHttp = () => {
     [],
   );
   const { error, code } = httpState;
+
   useEffect(() => {
     if (error && code === 401) {
       navigate('/login');

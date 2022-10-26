@@ -45,9 +45,11 @@ const LoginPage = () => {
   }, []);
 
   useEffect(() => {
-    if (isAuth) {
-      onGetCharacter();
-    }
+    (async () => {
+      if (isAuth) {
+        await onGetCharacter();
+      }
+    })();
   }, [isAuth, onGetCharacter]);
 
   return (

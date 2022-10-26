@@ -33,7 +33,8 @@ const useGetCharacterApi = () => {
 };
 
 const useCreateCharacterApi = () => {
-  const { isLoading, data, error, sendRequest } = useHttp();
+  const { isLoading, data, error, code, sendRequest } =
+    useHttp();
   const { onAdd } = useContext(MessageContext);
 
   const createCharacterApi = useCallback(
@@ -48,10 +49,10 @@ const useCreateCharacterApi = () => {
   );
 
   useEffect(() => {
-    if (error) {
+    if (error & (code !== 401)) {
       onAdd('error', error, 1200);
     }
-  }, [error, onAdd]);
+  }, [error, onAdd, code]);
 
   return {
     isLoading,
@@ -62,7 +63,7 @@ const useCreateCharacterApi = () => {
 };
 
 const useUpdateCharacterAttributesApi = () => {
-  const { sendRequest, error } = useHttp();
+  const { sendRequest, error, code } = useHttp();
   const { onAdd } = useContext(MessageContext);
 
   const updateCharacterAttributesApi = useCallback(
@@ -77,10 +78,10 @@ const useUpdateCharacterAttributesApi = () => {
   );
 
   useEffect(() => {
-    if (error) {
+    if (error && code !== 401) {
       onAdd('error', error, 1200);
     }
-  }, [error, onAdd]);
+  }, [error, onAdd, code]);
 
   return {
     updateCharacterAttributesApi,
@@ -88,7 +89,7 @@ const useUpdateCharacterAttributesApi = () => {
 };
 
 const useDeleteCharacterDeathApi = () => {
-  const { sendRequest, error } = useHttp();
+  const { sendRequest, data, code, error } = useHttp();
   const { onAdd } = useContext(MessageContext);
 
   const deleteCharacterDeathApi = useCallback(
@@ -100,12 +101,17 @@ const useDeleteCharacterDeathApi = () => {
       }),
     [sendRequest],
   );
+  useEffect(() => {
+    if (data) {
+      onAdd('info', '角色餓死已被 GM 復活', 1200);
+    }
+  }, [data, onAdd]);
 
   useEffect(() => {
-    if (error) {
+    if (error && code !== 401) {
       onAdd('error', error, 1200);
     }
-  }, [error, onAdd]);
+  }, [error, onAdd, code]);
 
   return {
     deleteCharacterDeathApi,
