@@ -1,8 +1,13 @@
-import { usePostPropApi } from 'apis/useInventoryApi';
-import Card from 'modules/Card';
-import Modal from 'modules/Modal';
-import { useContext, useEffect, useState } from 'react';
-import MessageContext from 'store/messageContext';
+import { usePostPropApi } from "apis/useInventoryApi";
+import Card from "modules/Card";
+import Modal from "modules/Modal";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
+import MessageContext from "store/messageContext";
 
 const Inventory = ({
   isOpen,
@@ -20,7 +25,7 @@ const Inventory = ({
   };
   const doubleClickHandler = async (item) => {
     if (item.amount <= 0) {
-      onAdd('error', `未擁有該道具`, 1200);
+      onAdd("error", `未擁有該道具`, 1200);
       return;
     }
     await postPropApi(item._id);
@@ -31,7 +36,7 @@ const Inventory = ({
     onClose();
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!_props) return;
     setProps(_props);
   }, [_props]);
@@ -40,21 +45,21 @@ const Inventory = ({
     <>
       <button
         onClick={onOpen}
-        className='hover:text-gray-500 active:text-gray-700'
+        className="hover:text-gray-500 active:text-gray-700"
       >
         物品 [B]
       </button>
       <Modal
         onRequestClose={closeHandler}
-        contentLabel={'setting-modal'}
+        contentLabel={"setting-modal"}
         isOpen={isOpen}
       >
         <Card>
-          <h2 className='mb-6 text-center text-2xl'>
+          <h2 className="mb-6 text-center text-2xl">
             物品欄
           </h2>
-          <div className='flex flex-col gap-6 sm:flex-row'>
-            <ul className=' grid w-max grid-cols-4 grid-rows-5 gap-[10px] bg-gray-900 p-[15px] text-white'>
+          <div className="flex flex-col gap-6 sm:flex-row">
+            <ul className=" grid w-max grid-cols-4 grid-rows-5 gap-[10px] bg-gray-900 p-[15px] text-white">
               {Array.isArray(props) &&
                 props.map((item) => {
                   return (
@@ -66,16 +71,16 @@ const Inventory = ({
                       onClick={() => {
                         clickHandler(item);
                       }}
-                      className='group h-[50px] w-[50px] border border-white bg-gray-700 outline outline-1 outline-transparent transition-all hover:outline-offset-[-5px] hover:outline-white active:border-none active:outline-none'
+                      className="group h-[50px] w-[50px] border border-white bg-gray-700 outline outline-1 outline-transparent transition-all hover:outline-offset-[-5px] hover:outline-white active:border-none active:outline-none"
                     >
-                      <div className='relative transition-all'>
+                      <div className="relative transition-all">
                         <img
-                          className='h-full w-full max-w-none transition-all group-hover:-m-[10%] group-hover:h-[120%] group-hover:w-[120%]'
+                          className="h-full w-full max-w-none transition-all group-hover:-m-[10%] group-hover:h-[120%] group-hover:w-[120%]"
                           src={item.url}
-                          alt=''
+                          alt=""
                           title={item.name}
                         />
-                        <p className='text-shadow absolute bottom-[5%] right-[5%] m-0'>
+                        <p className="text-shadow absolute bottom-[5%] right-[5%] m-0">
                           {item.amount}
                         </p>
                       </div>
@@ -83,12 +88,12 @@ const Inventory = ({
                   );
                 })}
             </ul>
-            <div className='basis-2/4'>
+            <div className="basis-2/4">
               {prop && (
                 <>
-                  <h3 className='mb-6'>{prop.name}</h3>
+                  <h3 className="mb-6">{prop.name}</h3>
                   <p>說明:</p>
-                  <p className='mb-6'>{prop.description}</p>
+                  <p className="mb-6">{prop.description}</p>
                   <p>效果:</p>
                   <p>
                     {prop.attributes.satiety > 0 &&

@@ -1,24 +1,24 @@
-import { useDeleteCharacterDeathApi } from 'apis/useCharacterApi';
-import { useGetInventoryApi } from 'apis/useInventoryApi';
-import Game from 'components/Game/Game';
-import GameFooter from 'components/GameFooter/GameFooter';
-import GameHeader from 'components/GameHeader/GameHeader';
-import Gashapon from 'components/Gashapon/Gashapon';
-import Talk from 'components/Talk/Task';
-import { audio } from 'data/config';
-import dayjs from 'dayjs';
-import useGameAction from 'hooks/useGameAction';
-import useGameEvent from 'hooks/useGameEvent';
-import useGameMap from 'hooks/useGameMap';
-import useGameMessage from 'hooks/useGameMessage';
-import useGameObjects from 'hooks/useGameObjects';
+import { useDeleteCharacterDeathApi } from "apis/useCharacterApi";
+import { useGetInventoryApi } from "apis/useInventoryApi";
+import Game from "components/Game/Game";
+import GameFooter from "components/GameFooter/GameFooter";
+import GameHeader from "components/GameHeader/GameHeader";
+import Gashapon from "components/Gashapon/Gashapon";
+import Talk from "components/Talk/Task";
+import { audio } from "data/config";
+import dayjs from "dayjs";
+import useGameAction from "hooks/useGameAction";
+import useGameEvent from "hooks/useGameEvent";
+import useGameMap from "hooks/useGameMap";
+import useGameMessage from "hooks/useGameMessage";
+import useGameObjects from "hooks/useGameObjects";
 import {
   useContext,
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import AuthContext from 'store/authContext';
+} from "react";
+import AuthContext from "store/authContext";
 
 const GamePage = () => {
   const { deleteCharacterDeathApi } =
@@ -27,7 +27,7 @@ const GamePage = () => {
     useContext(AuthContext);
   const [layer, setLayer] = useState({});
   const [map, setMap] = useState({
-    name: 'home',
+    name: "home",
     data: {},
     onComplete: () => {},
   });
@@ -43,7 +43,7 @@ const GamePage = () => {
   const {
     data: materials,
     getInventoryApi: getInventoryByMaterialsApi,
-  } = useGetInventoryApi({ type: 'MATERIAL' });
+  } = useGetInventoryApi({ type: "MATERIAL" });
 
   const { action, material, actionHandler, talkHandler } =
     useGameAction({
@@ -75,9 +75,9 @@ const GamePage = () => {
         audio.map.play();
       }
     };
-    window.addEventListener('keydown', listener);
+    window.addEventListener("keydown", listener);
     return () => {
-      window.removeEventListener('keydown', listener);
+      window.removeEventListener("keydown", listener);
     };
   }, []);
 
@@ -94,7 +94,7 @@ const GamePage = () => {
   useEffect(() => {
     const diff = dayjs().diff(
       character.updatedAt,
-      'minute',
+      "minute",
     );
     if (5 > diff) return;
     const satiety = Math.trunc(diff / 5) * 2;
@@ -106,7 +106,6 @@ const GamePage = () => {
     (async () => {
       if (!character) return;
       if (character.attributes.satiety > 0) return;
-      console.log(1);
       await deleteCharacterDeathApi(character._id);
       await onGetCharacter();
     })();
@@ -115,18 +114,19 @@ const GamePage = () => {
   return (
     <>
       <Talk
-        isOpen={isOpen === 'message'}
+        isOpen={isOpen === "message"}
         onClose={onClose}
         message={message}
       />
       <Gashapon
-        isOpen={isOpen === 'gashapon'}
+        isOpen={isOpen === "gashapon"}
         onClose={onClose}
+        materials={materials}
         getInventoryByMaterialsApi={
           getInventoryByMaterialsApi
         }
       />
-      <div className='absolute inset-0 m-auto overflow-hidden bg-black'>
+      <div className="absolute inset-0 m-auto overflow-hidden bg-black">
         <GameHeader materials={materials} />
         {isMounted && <Game layer={layer} />}
         <GameFooter
