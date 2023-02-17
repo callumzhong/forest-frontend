@@ -5963,6 +5963,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-hook-form: ^7.33.0
+    react-image: ^4.0.3
     react-modal: ^3.15.1
     react-router-dom: ^6.4.2
     react-scripts: 5.0.1
@@ -10137,6 +10138,17 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
   checksum: 485cde0248e668ad1845b927f9cc05b434c384141bb03bc143a7d7cc937eebf119c935114ccbfa397b463808283dab5b2334022fe5dba975402b201e601d6876
+  languageName: node
+  linkType: hard
+
+"react-image@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "react-image@npm:4.0.3"
+  peerDependencies:
+    "@babel/runtime": ">=7"
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 80f22af0b625a43344bc26421128a6204dce098098f14b2e3b0570cef88f94452fbd093ef50aa6e1e786b6009666b11a11a652431cd87fb6cace2d00ff305d19
   languageName: node
   linkType: hard
 
