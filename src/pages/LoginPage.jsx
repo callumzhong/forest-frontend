@@ -13,7 +13,7 @@ import AuthContext from "store/authContext";
 import sleep from "utils/sleep";
 
 const LoginPage = () => {
-  const { onGetCharacter, onLogout } =
+  const { onGetCharacter, onClear } =
     useContext(AuthContext);
   const {
     isAuth,
@@ -31,8 +31,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     disableAuthenticateHandler();
-    onLogout();
-  }, [disableAuthenticateHandler, onLogout]);
+    onClear();
+  }, [disableAuthenticateHandler, onClear]);
 
   useEffect(() => {
     const listener = () => {
@@ -71,9 +71,10 @@ const LoginPage = () => {
             )}
             {isAuth && (
               <Character
-                onDisableAuthenticate={
-                  disableAuthenticateHandler
-                }
+                onLogout={() => {
+                  onClear();
+                  disableAuthenticateHandler();
+                }}
               />
             )}
             <Message />

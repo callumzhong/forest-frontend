@@ -1,12 +1,12 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   createCharacterSchema,
   useCreateCharacterApi,
-} from 'apis/useCharacterApi';
-import Button from 'modules/Button';
-import Input from 'modules/Input';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+} from "apis/useCharacterApi";
+import Button from "modules/Button";
+import Input from "modules/Input";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 const CharacterForm = ({ onLogout, onGetCharacter }) => {
   const {
@@ -16,7 +16,7 @@ const CharacterForm = ({ onLogout, onGetCharacter }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: '',
+      name: "",
     },
     resolver: yupResolver(createCharacterSchema),
   });
@@ -34,22 +34,22 @@ const CharacterForm = ({ onLogout, onGetCharacter }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='mb-6 text-right'
+      className="mb-6 text-right"
     >
       <Input
         error={errors.name?.message}
-        label='名稱'
+        label="名稱"
         maxLength={12}
         basis={8}
-        {...register('name')}
+        {...register("name")}
       />
-      <div className='mt-6 flex justify-end gap-4'>
+      <div className="mt-6 flex justify-end gap-4">
         <Button
           disabled={
             Object.values(watched).some((item) => !item) ||
             isLoading
           }
-          type='submit'
+          type="submit"
         >
           建立
         </Button>

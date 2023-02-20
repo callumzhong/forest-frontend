@@ -3,7 +3,6 @@ import Card from "modules/Card";
 import Modal from "modules/Modal";
 import { Suspense, useContext, useState } from "react";
 import MessageContext from "store/messageContext";
-
 import { useImage } from "react-image";
 
 const MyImageComponent = (props) => {

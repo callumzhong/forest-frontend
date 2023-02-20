@@ -1,17 +1,17 @@
 import {
   useGetCharacterApi,
   useUpdateCharacterAttributesApi,
-} from 'apis/useCharacterApi';
+} from "apis/useCharacterApi";
 import React, {
   useCallback,
   useEffect,
   useState,
-} from 'react';
+} from "react";
 
 const AuthContext = React.createContext({
   isLoading: false,
   character: {},
-  onLogout: () => {},
+  onClear: () => {},
   onGetCharacter: async () => {},
   onUpdateCharacter: async () => {},
 });
@@ -24,7 +24,6 @@ export const AuthContextProvider = (props) => {
     isLoading,
     getCharacterApi,
     data: characterData,
-    clear,
   } = useGetCharacterApi();
 
   const updateCharacterAttributesHandler = useCallback(
@@ -43,6 +42,9 @@ export const AuthContextProvider = (props) => {
       getCharacterApi,
     ],
   );
+  const clearCharacterHandler = useCallback(() => {
+    setCharacter();
+  }, []);
 
   useEffect(() => {
     if (characterData) setCharacter(characterData);
@@ -53,7 +55,7 @@ export const AuthContextProvider = (props) => {
       value={{
         isLoading: isLoading,
         character: character,
-        onLogout: clear,
+        onClear: clearCharacterHandler,
         onGetCharacter: getCharacterApi,
         onUpdateCharacter: updateCharacterAttributesHandler,
       }}
