@@ -1,19 +1,20 @@
-import Author from 'components/Author/Author';
-import Character from 'components/Character/Character';
-import Login from 'components/Login/Login';
-import Message from 'components/Login/Message';
-import Register from 'components/Register/Register';
-import { audio } from 'data/config';
-import emitter, { eventName } from 'emitter';
-import useAuthorization from 'hooks/useAuthorization';
-import Card from 'modules/Card';
-import Hero from 'modules/Hero';
-import { useContext, useEffect } from 'react';
-import AuthContext from 'store/authContext';
-import sleep from 'utils/sleep';
+import Author from "components/Author/Author";
+import Character from "components/Character/Character";
+import Login from "components/Login/Login";
+import Message from "components/Login/Message";
+import Register from "components/Register/Register";
+import { audio } from "data/config";
+import emitter, { eventName } from "emitter";
+import useAuthorization from "hooks/useAuthorization";
+import Card from "modules/Card";
+import Hero from "modules/Hero";
+import { useContext, useEffect } from "react";
+import AuthContext from "store/authContext";
+import sleep from "utils/sleep";
 
 const LoginPage = () => {
-  const { onGetCharacter } = useContext(AuthContext);
+  const { onGetCharacter, onLogout } =
+    useContext(AuthContext);
   const {
     isAuth,
     disableAuthenticateHandler,
@@ -30,7 +31,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     disableAuthenticateHandler();
-  }, [disableAuthenticateHandler]);
+    onLogout();
+  }, [disableAuthenticateHandler, onLogout]);
 
   useEffect(() => {
     const listener = () => {
@@ -38,9 +40,9 @@ const LoginPage = () => {
         audio.map.play();
       }
     };
-    window.addEventListener('click', listener);
+    window.addEventListener("click", listener);
     return () => {
-      window.removeEventListener('click', listener);
+      window.removeEventListener("click", listener);
     };
   }, []);
 
@@ -53,13 +55,13 @@ const LoginPage = () => {
   }, [isAuth, onGetCharacter]);
 
   return (
-    <Hero className={'h-screen py-6'}>
-      <div className='container mx-auto flex h-full w-3/5 flex-col justify-around'>
-        <h1 className='mb-6 text-center text-8xl text-white'>
+    <Hero className={"h-screen py-6"}>
+      <div className="container mx-auto flex h-full w-3/5 flex-col justify-around">
+        <h1 className="mb-6 text-center text-8xl text-white">
           FOREST
         </h1>
         <Card gap={16}>
-          <div className='flex-[0.8]'>
+          <div className="flex-[0.8]">
             {!isAuth && (
               <Login
                 onEnableAuthenticate={
@@ -76,7 +78,7 @@ const LoginPage = () => {
             )}
             <Message />
           </div>
-          <div className='flex flex-[0.2] flex-col gap-4'>
+          <div className="flex flex-[0.2] flex-col gap-4">
             <Register
               onEnableAuthenticate={
                 enableAuthenticateHandler
